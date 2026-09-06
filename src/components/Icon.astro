@@ -1,0 +1,7 @@
+---
+// Use a single stroke style for the small set of interface actions.
+interface Props { name: 'arrow' | 'moon' | 'sun' | 'globe' | 'chevron'; size?: number }
+const { name, size = 18 } = Astro.props;
+const paths = { arrow: 'M4 12h16m-6-6 6 6-6 6', moon: 'M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z', sun: 'M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0', globe: 'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18Z', chevron: 'm6 9 6 6 6-6' };
+---
+<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={paths[name]} /></svg>

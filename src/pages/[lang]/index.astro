@@ -1,0 +1,29 @@
+---
+import Shell from '../../layouts/Shell.astro';
+import Starfield from '../../components/Starfield.astro';
+import Icon from '../../components/Icon.astro';
+import { languages, docURL, type Language } from '../../lib/site';
+// Build one complete landing page for each supported language.
+export function getStaticPaths() { return languages.map(lang => ({ params: { lang } })); }
+const lang = Astro.params.lang as Language;
+const zh = lang === 'zh-cn';
+---
+<Shell title={zh ? '从 Go 代码到 OpenAPI' : 'OpenAPI, from your Go code.'} description={zh ? '理解源码的契约生成。原生 OpenAPI 3.2。一个核心，适配你的框架。' : 'Source-aware contracts. Native OpenAPI 3.2. One core, your framework.'} {lang} home>
+  <main id="main">
+    <section class="hero">
+      <Starfield {lang} home />
+      <div class="hero-copy">
+        <h1>{zh ? 'OpenAPI，' : 'OpenAPI,'}<br />{zh ? '源自你的 Go 代码。' : 'from your Go code.'}</h1>
+        <p>{zh ? '理解源码的契约生成。原生 OpenAPI 3.2。一个核心，适配你的框架。' : 'Source-aware contracts. Native OpenAPI 3.2. One core, your framework.'}</p>
+        <div class="hero-actions">
+          <a class="button primary" href={docURL(lang, 'human')}>{zh ? '阅读文档' : 'Read the docs'}<Icon name="arrow" size={23} /></a>
+          <a class="button" href={docURL(lang, 'ai')}>{zh ? 'AI 专用文档' : 'AI documentation'}<Icon name="arrow" size={23} /></a>
+        </div>
+      </div>
+    </section>
+    <section class="product-index" aria-label={zh ? '产品文档' : 'Product documentation'}>
+      <a class="product-row" href={docURL(lang, 'human')}><h2>openapi / {zh ? '核心' : 'Core'}</h2><p>{zh ? '直接从 Go 代码生成 OpenAPI 3.2 文档。理解源码、类型安全、独立于框架。' : 'Generate OpenAPI 3.2 documents directly from your Go code. Source-aware, type-safe, and framework-agnostic.'}</p><Icon name="arrow" size={32} /></a>
+      <a class="product-row" href={docURL(lang, 'human', 'gin')}><h2>gin-swagger / Gin</h2><p>{zh ? '在 Gin 应用中生成契约，提供离线 Swagger UI 和 OpenAPI 文档。' : 'Automatically serve Swagger UI and OpenAPI docs in Gin applications.'}</p><Icon name="arrow" size={32} /></a>
+    </section>
+  </main>
+</Shell>

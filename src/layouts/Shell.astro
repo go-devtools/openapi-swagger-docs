@@ -1,0 +1,28 @@
+---
+import Header from '../components/Header.astro';
+import { labels, type Language, type Audience } from '../lib/site';
+import '../styles/site.css';
+// Shared document metadata keeps each localized audience route self-contained.
+interface Props { title: string; description: string; lang: Language; audience?: Audience; chapter?: string; home?: boolean }
+const { title, description, lang, audience = 'human', chapter, home = false } = Astro.props;
+---
+<!doctype html>
+<html lang={lang} data-theme="dark">
+  <head>
+    <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title} · openapi-golang</title><meta name="description" content={description} />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="AI documentation index" />
+    <script is:inline>
+      // Apply a saved preference before first paint; storage may be unavailable.
+      try { const theme = localStorage.getItem('openapi-theme'); if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme; } catch {}
+    </script>
+  </head>
+  <body class:list={[home ? 'home-page' : 'reading-page']}>
+    <a class="skip-link" href="#main">{labels[lang].skip}</a>
+    <Header {lang} {audience} {chapter} {home} />
+    <slot />
+    <script>import '../scripts/preferences';</script>
+  </body>
+</html>

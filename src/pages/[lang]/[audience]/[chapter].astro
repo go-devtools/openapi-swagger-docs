@@ -1,0 +1,38 @@
+---
+import Shell from '../../../layouts/Shell.astro';
+import Starfield from '../../../components/Starfield.astro';
+import Icon from '../../../components/Icon.astro';
+import { labels, chapters, docURL } from '../../../lib/site';
+import { documents } from '../../../lib/documents';
+// Every audience and language is generated as a complete independent HTML document.
+export function getStaticPaths() { return documents.map(([, doc]) => ({ params: { lang: doc.frontmatter.lang, audience: doc.frontmatter.audience, chapter: doc.frontmatter.chapter }, props: { doc } })); }
+const { doc } = Astro.props;
+const { lang, audience, chapter, title, description, source } = doc.frontmatter;
+const l = labels[lang];
+const { Content } = doc;
+const headings = doc.getHeadings().filter(h => h.depth === 2);
+---
+<Shell {lang} {audience} {chapter} {title} {description}>
+  <Starfield {lang} />
+  <div class="reading-layout">
+    <aside class="sidebar">
+      <details class="mobile-contents" open>
+        <summary>{l.menu}<Icon name="chevron" /></summary>
+        <nav aria-label={l.docs}>
+          <details class="nav-group" open><summary>{l.core}<Icon name="chevron" /></summary><div class="nav-items">
+            {chapters.slice(0, 3).map(item => <a href={docURL(lang, audience, item)} aria-current={chapter === item ? 'page' : undefined}>{l[item]}</a>)}
+          </div></details>
+          <details class="nav-group" open><summary>{l.adapters}<Icon name="chevron" /></summary><div class="nav-items">
+            {chapters.slice(3).map(item => <a href={docURL(lang, audience, item)} aria-current={chapter === item ? 'page' : undefined}>{l[item]}</a>)}
+          </div></details>
+        </nav>
+      </details>
+    </aside>
+    <main id="main" class="document-main">
+      <div class="document-heading"><h1>{title}</h1><p>{description}</p></div>
+      <article><Content /></article>
+      <footer class="document-footer"><a href={`/raw/${lang}/${audience}/${chapter}.md`}>{l.raw}</a><a href={source}>{l.source}<Icon name="arrow" size={16} /></a></footer>
+    </main>
+    <aside class="page-toc"><nav aria-label={l.toc}><p>{l.toc}</p>{headings.map(h => <a href={`#${h.slug}`}>{h.text}</a>)}</nav></aside>
+  </div>
+</Shell>
