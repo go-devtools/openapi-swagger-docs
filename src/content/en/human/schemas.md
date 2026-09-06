@@ -4,7 +4,7 @@ description: "Preserve actual Go identities while describing the bytes your appl
 lang: "en"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/094f7f6d9faf6350e48a62a17a619c91757e0dee/docs/standalone-schema.md"
+source: "https://github.com/openapi-golang/openapi/blob/cb0cfbb4dfdc293df0eb4bd4cf0df0dcc0ddd156/docs/standalone-schema.md"
 ---
 
 ## Project a source type
@@ -39,4 +39,10 @@ Read `.Value` for the value and `.Present` to distinguish absence. A zero-valued
 
 `Example.DataValue` represents logical data, while `SerializedValue` contains the actual wire representation. `externalValue` requires explicitly supplied offline example resources. XML metadata describes a contract; it does not select a serializer or prove how business code emits XML.
 
-Read the source reference for resource-aware `$defs`, embedded dependencies and bounded standalone output. [Native object details](https://github.com/openapi-golang/openapi/blob/094f7f6d9faf6350e48a62a17a619c91757e0dee/docs/native-objects.md) describe migration and current limits.
+Read the source reference for resource-aware `$defs`, embedded dependencies and bounded standalone output. [Native object details](https://github.com/openapi-golang/openapi/blob/cb0cfbb4dfdc293df0eb4bd4cf0df0dcc0ddd156/docs/native-objects.md) describe migration and current limits.
+
+## Polymorphic branches
+
+The checker now verifies discriminator candidates and `allOf` inheritance across offline references. If the discriminating field is optional, provide a default branch that accepts its omission and include it among the union candidates. Keep known and fallback branches disjoint when using `oneOf`.
+
+These checks preserve normal JSON Schema validation. Required-field proof is conservative, so advanced dynamic or satisfiability constraints may need an explicit `required` or a default branch. The linked native object guide documents the exact diagnostics and limits.

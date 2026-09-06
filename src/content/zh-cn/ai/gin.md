@@ -4,7 +4,7 @@ description: "生成、解释、挂载并验证，保持业务行为不变。"
 lang: "zh-cn"
 audience: "ai"
 chapter: "gin"
-source: "https://github.com/openapi-golang/gin-swagger/blob/1584d531e05826f3c55af71a0404d5a6d1658689/docs/ai-integration.md"
+source: "https://github.com/openapi-golang/gin-swagger/blob/960f538e69cab4bed9167e8cafdab9dd365d1554/docs/ai-integration.md"
 ---
 
 ## 前置条件

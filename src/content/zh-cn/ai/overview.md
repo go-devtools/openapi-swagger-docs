@@ -4,7 +4,7 @@ description: "供编程代理与自动化使用的专用契约参考。"
 lang: "zh-cn"
 audience: "ai"
 chapter: "overview"
-source: "https://github.com/openapi-golang/openapi/blob/094f7f6d9faf6350e48a62a17a619c91757e0dee/docs/ai-integration.md"
+source: "https://github.com/openapi-golang/openapi/blob/cb0cfbb4dfdc293df0eb4bd4cf0df0dcc0ddd156/docs/ai-integration.md"
 ---
 
 ## 接入契约
