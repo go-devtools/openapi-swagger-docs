@@ -120,7 +120,9 @@ document.querySelectorAll<HTMLCanvasElement>('canvas[data-stars]').forEach((canv
   // Use display cadence with bounded elapsed time; no frame remains scheduled while paused or hidden.
   function animate(time: number) {
     frame = 0;
-    if (media.matches || paused || document.hidden || !visible) return;
+    // Synchronize immediately when a browser defers its media-query change notification.
+    if (media.matches) { refresh(); return; }
+    if (paused || document.hidden || !visible) return;
     const dt = last ? Math.min((time - last) / 1000, .035) : 1 / 60;
     last = time; clock += dt; draw(dt);
     frame = requestAnimationFrame(animate);

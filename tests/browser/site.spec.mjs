@@ -68,6 +68,26 @@ test('reading margins, links and raw agent content work without external request
   expect(external).toEqual([]);
 });
 
+// A delayed browser notification must not leave motion controls out of sync with the preference.
+test('reduced motion synchronizes even without a media change notification', async ({ page }) => {
+  await page.addInitScript(() => {
+    const match = window.matchMedia.bind(window);
+    window.matchMedia = query => {
+      const result = match(query);
+      if (query.includes('prefers-reduced-motion')) result.addEventListener = () => {};
+      return result;
+    };
+  });
+  await page.goto('/en/');
+  await expect(page.locator('canvas')).toHaveAttribute('data-rendered', 'true');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(page.getByRole('button', { name: 'Animate stars', exact: true })).toBeDisabled();
+  const still = await pixels(page);
+  await page.mouse.move(1130, 380);
+  await page.waitForTimeout(180);
+  expect(await pixels(page)).toBe(still);
+});
+
 test('phone and tablet layouts keep controls and article width inside the viewport', async ({ page }, info) => {
   for (const width of [390, 631, 768]) {
     await page.setViewportSize({ width, height: 844 });
