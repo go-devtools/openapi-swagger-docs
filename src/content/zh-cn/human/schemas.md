@@ -4,7 +4,7 @@ description: "保留真实 Go 类型身份，描述应用实际收发的数据�
 lang: "zh-cn"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/cb0cfbb4dfdc293df0eb4bd4cf0df0dcc0ddd156/docs/standalone-schema.md"
+source: "https://github.com/openapi-golang/openapi/blob/dbb920fec4ca18faf8f56f789bbf1a1ef209e674/docs/standalone-schema.md"
 ---
 
 ## 导出源码类型
@@ -39,10 +39,16 @@ body := spec.RequestBody{Required: spec.Set(true)}
 
 `Example.DataValue` 表示逻辑数据，`SerializedValue` 表示线上序列化结果。`externalValue` 必须使用显式提供的离线示例资源。XML 元数据只描述契约，不会选择序列化器，也不能证明业务代码实际如何输出 XML。
 
-源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/openapi-golang/openapi/blob/cb0cfbb4dfdc293df0eb4bd4cf0df0dcc0ddd156/docs/native-objects.md)说明了迁移方式和当前限制。
+源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/openapi-golang/openapi/blob/dbb920fec4ca18faf8f56f789bbf1a1ef209e674/docs/native-objects.md)说明了迁移方式和当前限制。
 
 ## 多态分支
 
 检查器现已验证离线引用中的 discriminator 候选和 `allOf` 继承。判别字段可缺省时，应提供允许其缺失的默认分支，并将默认分支列入联合候选。使用 `oneOf` 时，已知分支与默认分支应避免重叠。
 
 这些检查保留正常的 JSON Schema 实例验证语义。必填字段证明采用保守规则，高级动态约束或可满足性条件可能需要明确的 `required` 或默认分支。上面的原生对象指南说明了具体诊断和限制。
+
+## XML 使用位置的名称
+
+XML content 中的内联 element 或 attribute Schema，如果无法从组件或属性推断名称，就需要设置 `xml.name`。属性下的数组项继承属性名；根数组的包装名称不会为它的项提供名称。普通引用保留目标的实际命名位置，包括离线资源。名称缺失时，检查器在对应 Schema 输出 `openapi.spec.xml.name.required`。
+
+规则适用于请求、响应、参数和 Header 中的 XML content，不影响只用于 JSON 的 Schema。静态组合和数组遍历共用引用图的资源预算。动态注解收集、嵌套 Encoding 的内容类型及实际 XML 编解码行为不在本次检查范围，完整边界见固定版本的原生对象指南。

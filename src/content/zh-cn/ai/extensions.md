@@ -4,7 +4,7 @@ description: "扩展已测试的公开边界，保持核心不包含框架规则
 lang: "zh-cn"
 audience: "ai"
 chapter: "extensions"
-source: "https://github.com/openapi-golang/openapi/blob/cb0cfbb4dfdc293df0eb4bd4cf0df0dcc0ddd156/docs/adapter-sdk.md"
+source: "https://github.com/openapi-golang/openapi/blob/dbb920fec4ca18faf8f56f789bbf1a1ef209e674/docs/adapter-sdk.md"
 ---
 
 ## 职责契约

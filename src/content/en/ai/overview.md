@@ -4,7 +4,7 @@ description: "A focused reference for coding agents and automation."
 lang: "en"
 audience: "ai"
 chapter: "overview"
-source: "https://github.com/openapi-golang/openapi/blob/cb0cfbb4dfdc293df0eb4bd4cf0df0dcc0ddd156/docs/ai-integration.md"
+source: "https://github.com/openapi-golang/openapi/blob/dbb920fec4ca18faf8f56f789bbf1a1ef209e674/docs/ai-integration.md"
 ---
 
 ## Contract

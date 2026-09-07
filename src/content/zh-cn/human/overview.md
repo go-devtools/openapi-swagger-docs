@@ -4,7 +4,7 @@ description: "从 Go 源码生成契约，将框架行为留在适配器中。"
 lang: "zh-cn"
 audience: "human"
 chapter: "overview"
-source: "https://github.com/openapi-golang/openapi/blob/cb0cfbb4dfdc293df0eb4bd4cf0df0dcc0ddd156/docs/adapter-sdk.md"
+source: "https://github.com/openapi-golang/openapi/blob/dbb920fec4ca18faf8f56f789bbf1a1ef209e674/docs/adapter-sdk.md"
 ---
 
 ## 各部分如何配合

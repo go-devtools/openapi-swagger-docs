@@ -4,7 +4,7 @@ description: "Preserve actual Go identities while describing the bytes your appl
 lang: "en"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/cb0cfbb4dfdc293df0eb4bd4cf0df0dcc0ddd156/docs/standalone-schema.md"
+source: "https://github.com/openapi-golang/openapi/blob/dbb920fec4ca18faf8f56f789bbf1a1ef209e674/docs/standalone-schema.md"
 ---
 
 ## Project a source type
@@ -39,10 +39,16 @@ Read `.Value` for the value and `.Present` to distinguish absence. A zero-valued
 
 `Example.DataValue` represents logical data, while `SerializedValue` contains the actual wire representation. `externalValue` requires explicitly supplied offline example resources. XML metadata describes a contract; it does not select a serializer or prove how business code emits XML.
 
-Read the source reference for resource-aware `$defs`, embedded dependencies and bounded standalone output. [Native object details](https://github.com/openapi-golang/openapi/blob/cb0cfbb4dfdc293df0eb4bd4cf0df0dcc0ddd156/docs/native-objects.md) describe migration and current limits.
+Read the source reference for resource-aware `$defs`, embedded dependencies and bounded standalone output. [Native object details](https://github.com/openapi-golang/openapi/blob/dbb920fec4ca18faf8f56f789bbf1a1ef209e674/docs/native-objects.md) describe migration and current limits.
 
 ## Polymorphic branches
 
 The checker now verifies discriminator candidates and `allOf` inheritance across offline references. If the discriminating field is optional, provide a default branch that accepts its omission and include it among the union candidates. Keep known and fallback branches disjoint when using `oneOf`.
 
 These checks preserve normal JSON Schema validation. Required-field proof is conservative, so advanced dynamic or satisfiability constraints may need an explicit `required` or a default branch. The linked native object guide documents the exact diagnostics and limits.
+
+## XML names at media use sites
+
+For XML content, inline element or attribute schemas need `xml.name` when a component or property name cannot be inferred. Array items beneath a property inherit that property name; a root array's wrapper name does not name its items. Ordinary references preserve the target's physical naming context, including offline resources. Missing names produce `openapi.spec.xml.name.required` at the offending schema.
+
+The checker applies this rule to XML content on requests, responses, parameters and headers. JSON-only schemas are unaffected. Static composition and array traversal share the reference graph's resource budget. Dynamic annotation collection, nested Encoding content types and actual XML codec behavior remain outside this check; see the pinned native object guide for the exact scope.
