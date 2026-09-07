@@ -4,7 +4,7 @@ description: "Extend tested public boundaries without moving framework rules int
 lang: "en"
 audience: "ai"
 chapter: "extensions"
-source: "https://github.com/openapi-golang/openapi/blob/365458867d54082e317bbb1f1770e6b34cdb7f25/docs/adapter-sdk.md"
+source: "https://github.com/openapi-golang/openapi/blob/2a27bf547b5e4397bde6289df65caba482b6cd7f/docs/adapter-sdk.md"
 ---
 
 ## Ownership
@@ -25,3 +25,9 @@ source: "https://github.com/openapi-golang/openapi/blob/365458867d54082e317bbb1f
 Real source fixtures → generated Bundle → actual router → independent positive/negative HTTP samples.
 
 Verify a separate consumer with real fixed remote modules, `GOWORK=off` and no `replace`. Gin is the only delivered adapter. Fiber/Echo imports and support claims are invalid. Arbitrary heap aliasing and asynchronous effects remain explicit limitations.
+
+## Versions
+
+- Pin the Go SDK version; compile and test custom frontends before upgrading.
+- Bundle: format 1, OpenAPI 3.2.0, known required capabilities only. Reject future formats and unknown fields/capabilities.
+- Recorded writer/reader samples are limited evidence. Format acceptance does not prove build-profile equivalence or source freshness.

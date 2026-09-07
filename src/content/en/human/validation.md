@@ -4,7 +4,7 @@ description: "Separate document validity, source freshness and evidence from rea
 lang: "en"
 audience: "human"
 chapter: "validation"
-source: "https://github.com/openapi-golang/openapi/blob/365458867d54082e317bbb1f1770e6b34cdb7f25/docs/contracttest.md"
+source: "https://github.com/openapi-golang/openapi/blob/2a27bf547b5e4397bde6289df65caba482b6cd7f/docs/contracttest.md"
 ---
 
 ## Three distinct checks
@@ -47,4 +47,4 @@ gin-swagger check --spec ./openapi.json --max-bytes=8388608 --timeout=30s
 
 Both CLIs use the optional core `checkio.ReadFile` helper for explicitly selected local files. The default Gin input limit is eight MiB; an exact byte boundary is valid. Oversized input, non-regular files, cancellation and expiration fail before reporting success. The timeout is cooperative between reads and bounded validation stages, not a hard interruption of kernel calls. `--max-bytes` applies only to `check --spec`.
 
-The shared UI displays stream `itemSchema` separately from a whole-body Schema and preserves finite NDJSON/SSE framing. Whole-query parameters stay read-only because the pinned renderer omits their values during submission. QUERY requires explicit enablement; omitted extension methods and tag metadata produce compatibility notes. Read the [verified UI boundaries](https://github.com/openapi-golang/openapi/blob/365458867d54082e317bbb1f1770e6b34cdb7f25/docs/swaggerui-compatibility.md) before treating a rendered operation as a working client.
+The shared UI displays stream `itemSchema` separately from a whole-body Schema and preserves finite NDJSON/SSE framing. Whole-query parameters stay read-only because the pinned renderer omits their values during submission. QUERY requires explicit enablement; omitted extension methods and tag metadata produce compatibility notes. Read the [verified UI boundaries](https://github.com/openapi-golang/openapi/blob/2a27bf547b5e4397bde6289df65caba482b6cd7f/docs/swaggerui-compatibility.md) before treating a rendered operation as a working client.

@@ -4,7 +4,7 @@ description: "保留类型身份、线上结构和显式值存在性。"
 lang: "zh-cn"
 audience: "ai"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/365458867d54082e317bbb1f1770e6b34cdb7f25/docs/native-objects.md"
+source: "https://github.com/openapi-golang/openapi/blob/2a27bf547b5e4397bde6289df65caba482b6cd7f/docs/native-objects.md"
 ---
 
 ## 投影

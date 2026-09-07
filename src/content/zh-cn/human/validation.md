@@ -4,7 +4,7 @@ description: "区分文档有效性、源码新鲜度和实际样本提供的证
 lang: "zh-cn"
 audience: "human"
 chapter: "validation"
-source: "https://github.com/openapi-golang/openapi/blob/365458867d54082e317bbb1f1770e6b34cdb7f25/docs/contracttest.md"
+source: "https://github.com/openapi-golang/openapi/blob/2a27bf547b5e4397bde6289df65caba482b6cd7f/docs/contracttest.md"
 ---
 
 ## 三种不同的检查
@@ -47,4 +47,4 @@ gin-swagger check --spec ./openapi.json --max-bytes=8388608 --timeout=30s
 
 两个 CLI 通过核心可选的 `checkio.ReadFile` 读取明确指定的本地文件。Gin 默认输入上限为 8 MiB，允许文件恰好达到边界。超限、非普通文件、取消和超时都会返回失败，不会继续报告成功。超时在读取与有界验证阶段之间协作检查，不能强制中断内核调用。`--max-bytes` 仅适用于 `check --spec`。
 
-共享 UI 将流式 `itemSchema` 与完整消息 Schema 分开展示，并保留有限 NDJSON/SSE 的分帧。整段查询参数保持只读，因为固定渲染器提交时会遗漏其值。QUERY 需要显式开启；未显示的扩展方法和标签元数据会产生兼容性提示。将页面视作可用客户端前，请查看[实际验证的 UI 边界](https://github.com/openapi-golang/openapi/blob/365458867d54082e317bbb1f1770e6b34cdb7f25/docs/swaggerui-compatibility.md)。
+共享 UI 将流式 `itemSchema` 与完整消息 Schema 分开展示，并保留有限 NDJSON/SSE 的分帧。整段查询参数保持只读，因为固定渲染器提交时会遗漏其值。QUERY 需要显式开启；未显示的扩展方法和标签元数据会产生兼容性提示。将页面视作可用客户端前，请查看[实际验证的 UI 边界](https://github.com/openapi-golang/openapi/blob/2a27bf547b5e4397bde6289df65caba482b6cd7f/docs/swaggerui-compatibility.md)。

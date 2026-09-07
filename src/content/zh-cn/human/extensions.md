@@ -4,7 +4,7 @@ description: "通过公开编译视图和中立效果描述框架行为。"
 lang: "zh-cn"
 audience: "human"
 chapter: "extensions"
-source: "https://github.com/openapi-golang/openapi/blob/365458867d54082e317bbb1f1770e6b34cdb7f25/docs/adapter-sdk.md"
+source: "https://github.com/openapi-golang/openapi/blob/2a27bf547b5e4397bde6289df65caba482b6cd7f/docs/adapter-sdk.md"
 ---
 
 ## 明确职责归属
@@ -30,3 +30,9 @@ Gin 是当前交付的框架产品。Fiber 与 Echo 只是未来扩展方向，�
 使用公开 SDK 编译真实 fixture handler，关联实际标准化路由，将输出的线上字节与独立契约比较，并在 `GOWORK=off` 的独立 Go module 中运行消费者。携带响应效果的未知调用必须产生诊断。
 
 任意堆别名、异步效果和不支持的控制流仍是限制。实现扩展前，请阅读源码参考中的回调所有权、格式能力和完整预算模型。
+
+## 明确版本升级边界
+
+通过模块版本固定源码 SDK。Bundle 格式 1 的 reader 接受 OpenAPI 3.2.0 以及已声明的 `oas32`、`schema2020-12`、`request-conditions-v1` 能力；未来格式、未知必需能力和未知协议字段会被拒绝。用于说明来源的 writer 字符串不必与 reader 相同。
+
+源码 SDK 指南记录了两个真实已发布 writer：当前运行时读取其归档产物，并使用有效和无效 JSON 样本验证契约。这只证明对应普通 JSON 契约，不覆盖任意历史模块组合。构建条件匹配与源码新鲜度仍需分别检查。升级适配器的固定依赖前，先运行核心的外部消费者测试，再关闭 workspace 重新生成并验证适配器。
