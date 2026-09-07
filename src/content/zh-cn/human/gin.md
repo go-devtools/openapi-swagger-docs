@@ -4,7 +4,7 @@ description: "从真实 handler 生成契约，在启动时挂载一次文档。
 lang: "zh-cn"
 audience: "human"
 chapter: "gin"
-source: "https://github.com/openapi-golang/gin-swagger/blob/f5e72c1b82678ec8d995638f80e634444a1d0d31/docs/ai-integration.md"
+source: "https://github.com/openapi-golang/gin-swagger/blob/5d3bef72339ffccbb0cbf366c513d5dd3f163502/docs/ai-integration.md"
 ---
 
 ## 运行完整示例
@@ -36,7 +36,7 @@ Authorize 只使用 Bearer。为示例授权路由输入公开演示值 `demo-to
 
 `Config.Groups` 定义右上角选择器中的完整文档，每组的 `Include(method, path)` 与 `Config.Include` 取交集。`Config.DefaultGroup` 选择初始文档。Tags 用于一个文档内部的操作分组，与整体文档选择器不同。
 
-示例关闭 `UI.Filter`。共享 UI 展示可读模型标题、紧凑示例和枚举含义。Gin 请求绑定、响应、SSE 和流式行为分别见[请求指南](https://github.com/openapi-golang/gin-swagger/blob/f5e72c1b82678ec8d995638f80e634444a1d0d31/docs/requests.md)和[响应指南](https://github.com/openapi-golang/gin-swagger/blob/f5e72c1b82678ec8d995638f80e634444a1d0d31/docs/responses.md)。
+示例关闭 `UI.Filter`。共享 UI 展示可读模型标题、紧凑示例和枚举含义。Gin 请求绑定、响应、SSE 和流式行为分别见[请求指南](https://github.com/openapi-golang/gin-swagger/blob/5d3bef72339ffccbb0cbf366c513d5dd3f163502/docs/requests.md)和[响应指南](https://github.com/openapi-golang/gin-swagger/blob/5d3bef72339ffccbb0cbf366c513d5dd3f163502/docs/responses.md)。
 
 ## 在 CI 检查生成结果
 

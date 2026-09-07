@@ -4,7 +4,7 @@ description: "Generate, inspect, mount and verify without changing business beha
 lang: "en"
 audience: "ai"
 chapter: "gin"
-source: "https://github.com/openapi-golang/gin-swagger/blob/f5e72c1b82678ec8d995638f80e634444a1d0d31/docs/ai-integration.md"
+source: "https://github.com/openapi-golang/gin-swagger/blob/5d3bef72339ffccbb0cbf366c513d5dd3f163502/docs/ai-integration.md"
 ---
 
 ## Integration

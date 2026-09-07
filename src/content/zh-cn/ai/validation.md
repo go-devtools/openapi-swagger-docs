@@ -4,7 +4,7 @@ description: "通过结构化结果区分过期输出、无效文档和未知效
 lang: "zh-cn"
 audience: "ai"
 chapter: "validation"
-source: "https://github.com/openapi-golang/openapi/blob/2a27bf547b5e4397bde6289df65caba482b6cd7f/docs/references.md"
+source: "https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8ab191b89a2065aa0/docs/references.md"
 ---
 
 ## 流程
@@ -27,3 +27,5 @@ source: "https://github.com/openapi-golang/openapi/blob/2a27bf547b5e4397bde6289d
 `CheckWithOptions` 接收 `BaseURI`、`Resources`、`ExampleResources`；不自动抓取缺失引用。源码新鲜度、文档有效性、运行时一致性分别证明。保留 `implementation: "not-proven"`；选中路由仍须通过 Build。
 
 `gin-swagger check --spec FILE --max-bytes=8388608 --timeout=30s` 通过公开 `checkio.ReadFile` 限制本地输入；非普通文件、超限、取消和阶段超时返回失败。取消为协作式。整段查询 UI 只读，流式单项面板独立于完整消息 Schema。文档合法不证明客户端序列化正确。
+
+原生授权：展示弃用状态、元数据、设备端点及作用域。`openapi.ui.deviceAuthorization` 表示无设备授权提交；`openapi.ui.oauth2Metadata` 表示不自动发现配置。Bearer 提交已验证；外部 OAuth 交换未验证。

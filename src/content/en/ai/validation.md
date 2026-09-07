@@ -4,7 +4,7 @@ description: "Use structured results to distinguish stale output, invalid docume
 lang: "en"
 audience: "ai"
 chapter: "validation"
-source: "https://github.com/openapi-golang/openapi/blob/2a27bf547b5e4397bde6289df65caba482b6cd7f/docs/references.md"
+source: "https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8ab191b89a2065aa0/docs/references.md"
 ---
 
 ## Procedure
@@ -27,3 +27,5 @@ source: "https://github.com/openapi-golang/openapi/blob/2a27bf547b5e4397bde6289d
 `CheckWithOptions` accepts `BaseURI`, `Resources` and `ExampleResources`. Never fetch missing references automatically. Source freshness, document validity and runtime agreement are separate claims. Preserve `implementation: "not-proven"`; selected routes must still pass Build.
 
 `gin-swagger check --spec FILE --max-bytes=8388608 --timeout=30s` bounds local input through public `checkio.ReadFile`; non-regular/oversized files and canceled/expired stages fail. Cancellation is cooperative. Whole-query UI is read-only; stream item panels are separate from whole-body Schema. Document validity does not prove client serialization.
+
+Native authorization: deprecation/metadata/device endpoints/scopes are displayed. `openapi.ui.deviceAuthorization` means no device grant action; `openapi.ui.oauth2Metadata` means no automatic discovery. Bearer submission is verified; external OAuth exchanges are not.
