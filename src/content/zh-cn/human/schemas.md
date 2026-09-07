@@ -4,7 +4,7 @@ description: "保留真实 Go 类型身份，描述应用实际收发的数据�
 lang: "zh-cn"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/standalone-schema.md"
+source: "https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/standalone-schema.md"
 ---
 
 ## 导出源码类型
@@ -39,7 +39,7 @@ body := spec.RequestBody{Required: spec.Set(true)}
 
 `Example.DataValue` 表示逻辑数据，`SerializedValue` 表示线上序列化结果。`externalValue` 必须使用显式提供的离线示例资源。XML 元数据只描述契约，不会选择序列化器，也不能证明业务代码实际如何输出 XML。
 
-源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/native-objects.md)说明了迁移方式和当前限制。
+源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/native-objects.md)说明了迁移方式和当前限制。
 
 ## 多态分支
 
@@ -72,3 +72,15 @@ multipart 的具名 `encoding` 不能与同层的位置编码 `prefixEncoding`�
 原生参数检查先解析引用，再比较名称和位置。操作可覆盖同名同位置的继承参数，但不能移除其他 Path Item 参数。最终参数集合最多包含一个 Querystring 参数，且不能与 Query 参数共存。外部 Path Item 和别名通过显式提供的离线资源解析。`spec.Parameter.Name` 序列化保留原生查询参数的空名称。
 
 Server 检查 URL 模板、变量默认值及枚举成员关系，不访问声明的主机。Link 的操作标识必须在显式提供的描述中唯一且可解析；参数字面值仍作为普通数据保留。这些检查不证明运行时 URL 选择、所有序列化器或任意 Schema 可满足性，具体诊断与边界见固定版本的原生对象指南。
+
+## 元数据与复用名称
+
+原生检查器会保留必填字符串 `info.title`、`info.version` 和 `license.name` 的显式空值，同时拒绝缺失字段和错误类型。文档必须包含 `paths`、`webhooks` 或 `components` 至少一项。组件名称仅允许英文字母、数字、点、连字符和下划线；Schema 内部属性及 `$defs` 名称不受这一组件规则限制。
+
+联系人邮箱和相对 URI 的语法检查离线执行。许可证 `identifier` 与 `url` 按存在性互斥。检查结果不代表 SPDX 表达式、登记信息或法律适用性已经验证。空请求体 `content` 使用规范允许的实现自定行为，本实现明确拒绝。诊断包含具体字段位置，显式提供的离线文档也会进行同样检查；完整边界见固定核心版本指南。
+
+## 端点路径绑定
+
+实际端点模板中的每个变量，都需要 Path Item 或每个操作提供对应的路径参数，包含 QUERY 与自定义方法。引用的 Path Item 会在每个使用它的端点分别检查。缺少变量、未使用的路径参数、重复表达式和同形模板层级都会产生诊断。空 Path Item 保留 ACL 例外。
+
+路径字面量遵循 OpenAPI 3.2 的 ASCII 与百分号编码语法，不允许空的中间路径段。表达式名称保留 Unicode 和大小写，也可以包含 `?`、`#`、`/` 等字符；这不等于认证运行时参数值的编码。组件名、Webhook 名称及 Callback 表达式不会被当作端点路径。检查器不决定其他歧义路由的匹配顺序，也不归一化等价的百分号拼写。

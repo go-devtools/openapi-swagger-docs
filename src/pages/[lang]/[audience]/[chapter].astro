@@ -14,7 +14,7 @@ const { Content } = doc;
 const headings = doc.getHeadings().filter(h => h.depth === 2);
 ---
 <Shell {lang} {audience} {chapter} {title} {description}>
-  <Starfield {lang} />
+  {audience === 'human' && <Starfield {lang} />}
   <div class="reading-layout">
     <aside class="sidebar">
       <details class="mobile-contents" open>
@@ -30,10 +30,10 @@ const headings = doc.getHeadings().filter(h => h.depth === 2);
       </details>
     </aside>
     <main id="main" class="document-main">
-      <div class="document-heading"><h1>{title}</h1><p>{description}</p></div>
+      <div class="document-heading"><h1>{title}</h1>{audience === 'human' ? <p>{description}</p> : <a class="ai-raw" href={siteURL(`/raw/${lang}/ai/${chapter}.md`)}>{l.raw}</a>}</div>
       <article><Content /></article>
-      <footer class="document-footer"><a href={siteURL(`/raw/${lang}/${audience}/${chapter}.md`)}>{l.raw}</a><a href={source}>{l.source}<Icon name="arrow" size={16} /></a></footer>
+      <footer class="document-footer">{audience === 'human' && <a href={siteURL(`/raw/${lang}/${audience}/${chapter}.md`)}>{l.raw}</a>}<a href={source}>{l.source}<Icon name="arrow" size={16} /></a></footer>
     </main>
-    <aside class="page-toc"><nav aria-label={l.toc}><p>{l.toc}</p>{headings.map(h => <a href={`#${h.slug}`}>{h.text}</a>)}</nav></aside>
+    {audience === 'human' && <aside class="page-toc"><nav aria-label={l.toc}><p>{l.toc}</p>{headings.map(h => <a href={`#${h.slug}`}>{h.text}</a>)}</nav></aside>}
   </div>
 </Shell>

@@ -4,33 +4,34 @@ description: "A focused reference for coding agents and automation."
 lang: "en"
 audience: "ai"
 chapter: "overview"
-source: "https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/ai-integration.md"
+source: "https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/ai-integration.md"
 ---
 
 ## Contract
 
-1. Use public SDK packages only. Framework behavior belongs in the adapter.
-2. Keep existing handler bodies, signatures, route registration and DTO tags unchanged.
-3. Report uncertainty through diagnostics; never invent responses to make generation pass.
+- Go 1.27.1; Gin 1.12.0; native OpenAPI 3.2.
+- Read fixed module versions from [manifest.json](/docs/manifest.json). Install the CLI at the application's adapter version.
+- Core owns types, comments, neutral contracts and validation. Adapters own framework behavior.
+- Preserve DTOs, handler signatures/bodies and route registration. Use public SDK packages only.
 
 ## Workflow
 
-From the Gin repository checkout:
-
 ```sh
-GOWORK=off go mod download
-GOWORK=off go run ./cmd/gin-swagger generate --dir ./examples/basic --output ./internal/apidoc
-GOWORK=off go run ./cmd/gin-swagger check --dir ./examples/basic --output ./internal/apidoc
+gin-swagger version
+gin-swagger generate --dir . --output ./internal/apidoc
+gin-swagger check --dir . --output ./internal/apidoc
 ```
 
-For a consumer application, use its real source directory and install the CLI at the same fixed module version. Record `version` output before evaluating diagnostics. Generation success does not imply every selected route can Build.
+Download dependencies first. Mount the generated Bundle on the actual router before serving. Generation, runtime Build and HTTP contract validation are separate checks.
 
-## Machine-readable entry points
+## Evidence
 
-- [llms.txt](/docs/llms.txt): compact discovery index.
-- [llms-full.txt](/docs/llms-full.txt): complete authored AI corpus in both explicit languages.
-- [manifest.json](/docs/manifest.json): fixed upstream versions, content identities and source SHA-256 digests.
+- Parse stdout JSON separately from stderr. Native exit codes: 0 success; 1 operation/document error; 2 flag error.
+- Preserve diagnostics and `implementation: "not-proven"`. Never invent a response or operation key.
+- Independent acceptance: fixed remote versions, `GOWORK=off`, no `replace`, actual positive/negative HTTP samples.
 
-## Evidence rules
+## Resources
 
-Parse stdout JSON separately from stderr and inspect the process status. Native CLI success is 0, operational/document errors are 1, flag syntax errors are 2. `go run` is not the native exit-code interface. Treat `implementation: "not-proven"` literally. No AI service, key or application-source upload is needed to use these documents.
+- [Index](/docs/llms.txt)
+- [Full AI corpus](/docs/llms-full.txt)
+- [Versions and content hashes](/docs/manifest.json)

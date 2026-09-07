@@ -16,10 +16,6 @@ const other = lang === 'en' ? 'zh-cn' : 'en';
     <a href="https://github.com/openapi-golang">GitHub</a>
   </nav>
   <div class="preferences">
-    <button class="control theme-toggle" data-theme-toggle aria-label={l.theme} title={l.theme}>
-      <span class="dark-icon"><Icon name="moon" /></span><span class="light-icon"><Icon name="sun" /></span>
-      <span class="dark-label">{l.dark}</span><span class="light-label">{l.light}</span>
-    </button>
     <a class="control" href={home ? siteURL(`/${other}/`) : docURL(other, audience, chapter)} hreflang={other} aria-label={l.language} title={other === 'en' ? 'Switch to English' : '切换为简体中文'}><Icon name="globe" /><span>{lang === 'en' ? 'EN' : '中文'}</span></a>
     <nav class="audience-switch" aria-label={l.audience}>
       <a href={home ? siteURL(`/${lang}/`) : docURL(lang, 'human', chapter)} aria-current={audience === 'human' ? 'true' : undefined}>{l.human}</a>

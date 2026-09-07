@@ -4,61 +4,33 @@ description: "保留类型身份、线上结构和显式值存在性。"
 lang: "zh-cn"
 audience: "ai"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/native-objects.md"
+source: "https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/native-objects.md"
 ---
 
-## 输入与输出
+## 投影
 
-使用 `compiler.Load` 加载实际构建条件，通过 `Project.Type` 或 `TypeIn` 解析真实 Go 类型表达式，再按方向、媒体类型和编解码器调用 `Project.Schema`。`Projection.StandaloneWithOptions` 输出具有资源身份、预算受限的离线 `$defs`。公开视图只读，回调同步执行。
+- `compiler.Load` 使用实际构建条件；`Project.Type`/`TypeIn` 使用真实 Go 类型表达式。
+- `Project.Schema` 明确方向、媒体类型和 codec；`Projection.StandaloneWithOptions` 导出有预算的离线 `$defs`。
+- 保留导入与泛型身份。公开视图只读，回调同步；不能假设自定义 codec 使用 JSON。
 
-## 存在性规则
-
-通过 `spec.Set(value)` 构造可选布尔字段，通过 `.Value` 和 `.Present` 读取值与存在性。序列化时不得将缺省强制转换为显式 false。`spec.Set[any](nil)` 表示明确的逻辑 null。
+## 存在性
 
 ```go
 operation := spec.Operation{Deprecated: spec.Set(false)}
 ```
 
-导入 `github.com/openapi-golang/openapi/spec`。这是当前固定的 1.0 前 API，与早期普通 bool 字段不能直接赋值兼容。
+导入 `github.com/openapi-golang/openapi/spec`；读取 `.Value` 与 `.Present`。缺省不同于 false；`spec.Set[any](nil)` 表示显式 null。枚举说明与值对齐；注释不证明运行时约束。
 
-## 解释规则
+## 原生校验
 
-不要给自定义编解码器强加 JSON 行为。保留泛型和导入声明的身份。注释描述语义，不能证明运行时执行约束。枚举标签与值必须对应，不得虚构缺失描述。
+| 范围 | 必要决策 |
+| --- | --- |
+| 路径 | 引用和继承解析后绑定精确路径参数，拒绝同形模板。 |
+| HTTP | 比较解析后的 `(in, name)`，应用操作覆盖，禁止混用 query/querystring。 |
+| 示例 | `dataValue` 与 `serializedValue` 可并存，与旧 `value` 互斥。 |
+| Discriminator | 使用真实联合或继承目标及有效默认分支；提示不代替实例校验。 |
+| XML | 提供必需的使用位置名称；元数据不选择线编码器。 |
+| Tags/encoding | 保留 parent 存在性，拒绝循环和命名／位置编码混用。 |
+| 元数据 | 保留必需空字符串；验证组件名；license URL/identifier 互斥。 |
 
-## 原生对象边界
-
-Example 的 `dataValue` 与 `serializedValue` 可共存，旧 `value` 与原生值字段互斥。XML 元数据不会选择序列化器。XML 使用位置的静态名称按下方说明的范围检查。采用高级字段前阅读固定版本的原生对象指南。
-
-## 多态决策规则
-
-显式 mapping 和 defaultMapping 的目标应列入相邻 `oneOf`/`anyOf` 候选，或确实通过 `allOf` 继承判别器所在的父 Schema。别名、离线锚点和间接继承的解析受共享资源预算限制。判别属性可缺省时，应提供能接受该属性缺失的 `defaultMapping`。
-
-必填证明使用显式 `required`、普通引用、`allOf` 约束、联合的每个候选及条件的两个分支，不求解任意可满足性，也不把静态引用目标当成动态作用域的证明。无法证明时，补充明确约束或合适的默认分支，并检查带位置的 `openapi.spec.discriminator.*` 诊断。
-
-Discriminator 提示不会改变 JSON Schema 实例验证结果。`oneOf` 分支重叠仍会失败；只验证父 Schema 不会自动验证映射子类。默认分支需要在适当情况下排除已知值，以免与其他联合分支重叠。
-
-## XML 命名决策
-
-对 `application/xml`、`text/xml` 及 `+xml` content，检查 `openapi.spec.xml.name.required`。内联 element/attribute Schema 无法推断名称时，应补充明确名称。组件名、属性名和属性数组的项名称按普通引用解析后的实际位置推断，不得把引用包装的名称传给目标，也不得把根数组名称传给数组项。组合层刻意不生成 XML 节点时使用 `nodeType: "none"`。
-
-静态遍历覆盖复用媒体、普通离线 Schema 引用、具名属性、数组项/元组及正向组合分支。`then`/`else` 仅在存在 `if` 时参与。循环遍历受 `MaxIndexBytes` 限制。未使用的 Schema 和仅 JSON content 不代表 XML 使用。不得将这些检查视为完整动态注解求值、嵌套 Encoding 验证或 XML 线上编解码认证。
-
-## 离线 UI 中的原生示例
-
-请求和响应的媒体示例现在直接读取 `dataValue` 与 `serializedValue`。JSON 数据保留 false、零、null、空集合及外观类似 JSON 的字符串；显式序列化文本原样展示和提交，配对示例另外展示 **Data value**。本地浏览器验证覆盖 JSON、XML、纯文本的实际提交字节、SSE 文本、可复用示例与媒体、选择切换和手动编辑，源文档保留原生 3.2 字段。
-
-需要精确的非 JSON 请求体示例时使用 `serializedValue`。这不代表参数与响应头示例、表单序列化、外部示例获取、只有逻辑值的 XML 序列化均已完整支持。执行请求仍需显式配置。
-
-## 标签与编码决策
-
-通过 `spec.Set(parent)` 构造 `Tag.Parent`，使用 `.Value`、`.Present` 读取，根标签保持零值。空名称是合法身份：`spec.Set("")` 引用显式声明的空名称标签，不表示缺省。拒绝重复名称、缺失父级和循环；保留任意字符串 kind。不得把普通标签分组当成原生层级 UI 支持。
-
-每层具名编码与位置编码均互斥；`prefixEncoding` 是对象数组，`itemEncoding` 是单个对象。Header 引用使用显式离线资源图。位置编码媒体需要 `itemSchema`，或从类型、数组项/元组、普通引用和正向组合得到数组结构证据。未使用定义、属性中的数组以及单纯循环均不证明外层数组形状。动态或任意实例逻辑无法证明时应提供明确约束。
-
-字段、style、布尔值、容器及组合校验不等于实现 multipart 编解码器，也不认证完整 contentType 语法和 UI 提交。检查 `openapi.spec.tag.*`、`openapi.spec.encoding.*` 诊断及固定版本指南。
-
-## HTTP 上下文决策
-
-解析 Parameter 引用后，再比较精确的 `(in, name)` 身份。Path Item 与 Operation 各自的列表内部禁止重复；应用操作级同身份覆盖后，保留其余继承参数。最终集合不能混用 Query 与 Querystring，也不能含多个 Querystring。将 `openapi.spec.parameter.duplicate`、`.querystring` 和 `.reference.cycle` 视为阻塞诊断，不通过给业务 DTO 加 tag 或改写路由来修正文档构造。
-
-序列化保留原生 Parameter 必填的空名称。Server 模板、字符串默认值及枚举在离线环境下检查，应用替换仍属于运行时行为。Link `operationId` 区分大小写，必须在显式提供的 OpenAPI 资源中对应唯一物理 Operation；跨文档重名时改用 `operationRef`。保留包括 false、null 在内的 Link 字面值。Path Item 引用字段冲突在本项检查中使用最近的显式字段；运行时 URL 消歧不在本项验证范围内。
+构建高级对象前读取固定源码指南。上述检查不证明任意 Schema 可满足性、运行时路由、XML/multipart 序列化或所有 Swagger UI 功能。定位诊断仍是阻塞条件。

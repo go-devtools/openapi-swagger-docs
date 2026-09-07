@@ -4,21 +4,24 @@ description: "Extend tested public boundaries without moving framework rules int
 lang: "en"
 audience: "ai"
 chapter: "extensions"
-source: "https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/adapter-sdk.md"
+source: "https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/adapter-sdk.md"
 ---
 
-## Ownership contract
+## Ownership
 
-Core: types, comments, budgets, neutral effects, Bundle and OpenAPI models. Adapter: framework call semantics, path normalization, handler identity evidence and mount behavior. Do not import core internal packages or expose third-party SSA through public APIs.
+- Core: types, comments, budgets, neutral effects, Bundle, OpenAPI and Schema validation.
+- Adapter: framework calls/codecs, handler evidence, actual routes, path normalization and mounting.
+- Public SDK only; no core internal imports or third-party SSA in public APIs.
 
-## Callback contract
+## Implementation
 
-Use public `Frontend` hooks and explicit neutral effects. Keep callbacks deterministic, synchronous where required, and independent of network, time and machine paths. Never execute business functions for discovery. Treat loaded public views as immutable and respect detached schema ownership.
+- Use `Frontend` hooks and explicit neutral effects.
+- Callbacks must be deterministic, bounded and synchronous where required.
+- Treat loaded views as immutable. Respect detached Schema ownership.
+- Never execute business functions for discovery or hide unknown effects.
 
-## Acceptance evidence
+## Acceptance
 
-Exercise real fixture handlers, actual normalized route snapshots and independent sample validation. Run a consumer in a separate module with fixed remote dependencies, `GOWORK=off`, and no `replace`. Verify unknown calls carrying effects remain diagnostics.
+Real source fixtures → generated Bundle → actual router → independent positive/negative HTTP samples.
 
-## Unimplemented products
-
-Gin is the delivered adapter. Fiber and Echo are future directions only. Do not invent imports, installation commands or support claims for them. Arbitrary heap aliasing and asynchronous effects remain explicit analysis limitations.
+Verify a separate consumer with real fixed remote modules, `GOWORK=off` and no `replace`. Gin is the only delivered adapter. Fiber/Echo imports and support claims are invalid. Arbitrary heap aliasing and asynchronous effects remain explicit limitations.

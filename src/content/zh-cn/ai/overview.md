@@ -4,33 +4,34 @@ description: "供编程代理与自动化使用的专用契约参考。"
 lang: "zh-cn"
 audience: "ai"
 chapter: "overview"
-source: "https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/ai-integration.md"
+source: "https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/ai-integration.md"
 ---
 
-## 接入契约
+## 契约
 
-1. 只使用公开 SDK 包，框架行为由适配器负责。
-2. 保持既有 handler 内容、签名、路由注册和 DTO tag 不变。
-3. 通过诊断报告不确定性，不得为通过生成而虚构响应。
+- Go 1.27.1；Gin 1.12.0；原生 OpenAPI 3.2。
+- 从 [manifest.json](/docs/manifest.json) 读取固定模块版本；CLI 与应用的适配器版本一致。
+- 核心负责类型、注释、中立契约和校验；适配器负责框架语义。
+- 保留 DTO、handler 签名与函数体、既有路由注册；仅使用公开 SDK。
 
-## 操作流程
-
-在 Gin 仓库中执行：
+## 流程
 
 ```sh
-GOWORK=off go mod download
-GOWORK=off go run ./cmd/gin-swagger generate --dir ./examples/basic --output ./internal/apidoc
-GOWORK=off go run ./cmd/gin-swagger check --dir ./examples/basic --output ./internal/apidoc
+gin-swagger version
+gin-swagger generate --dir . --output ./internal/apidoc
+gin-swagger check --dir . --output ./internal/apidoc
 ```
 
-用于消费者应用时，指定实际源码目录，CLI 与模块使用同一固定版本。判断诊断前记录 `version` 输出。生成成功不代表所有选中路由都能成功 Build。
+先下载依赖，再生成。使用实际 router 在启动服务前挂载 Bundle。生成、运行时 Build、HTTP 契约验收分别验证。
 
-## 机器可读入口
+## 证据
 
-- [llms.txt](/docs/llms.txt)：精简发现索引。
-- [llms-full.txt](/docs/llms-full.txt)：显式区分中英文的完整 AI 文档正文。
-- [manifest.json](/docs/manifest.json)：固定上游版本、文档身份和源文件 SHA-256 摘要。
+- 分别读取 stdout JSON、stderr、退出码。原生退出码：0 成功；1 操作或文档错误；2 参数错误。
+- 保留诊断和 `implementation: "not-proven"`；不得捏造响应或 OperationKey。
+- 独立验收：真实远端固定版本、`GOWORK=off`、无 `replace`、实际正反 HTTP 样本。
 
-## 证据规则
+## 入口
 
-分别解析 stdout JSON 与 stderr，并检查进程状态。原生 CLI 成功为 0，运行或文档错误为 1，参数语法错误为 2。`go run` 不提供原生退出码接口。必须保留 `implementation: "not-proven"` 的原始含义。使用这些文档无需 AI 服务、密钥或上传业务源码。
+- [索引](/docs/llms.txt)
+- [完整 AI 正文](/docs/llms-full.txt)
+- [版本与内容摘要](/docs/manifest.json)

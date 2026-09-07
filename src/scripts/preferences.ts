@@ -1,11 +1,3 @@
-// Synchronize the theme without requiring a framework or changing the document route.
-document.querySelector<HTMLButtonElement>('[data-theme-toggle]')?.addEventListener('click', () => {
-  const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-  document.documentElement.dataset.theme = theme;
-  try { localStorage.setItem('openapi-theme', theme); } catch {}
-  window.dispatchEvent(new Event('themechange'));
-});
-
 // Start compact on phones while leaving a fully expanded no-script navigation.
 if (matchMedia('(max-width: 650px)').matches) {
   const contents = document.querySelector<HTMLDetailsElement>('.mobile-contents');

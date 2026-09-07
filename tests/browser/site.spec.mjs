@@ -3,6 +3,25 @@ import { siteURL } from '../../src/lib/urls.mjs';
 import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
+// Agent pages retain actionable content without loading the decorative renderer or honoring old light preferences.
+test('agent pages stay dark, compact and free of decorative requests', async ({ page }) => {
+  const decoration = [];
+  page.on('request', request => {
+    if (/\/(?:_astro\/stars\.|src\/scripts\/stars\.ts)/.test(request.url())) decoration.push(request.url());
+  });
+  await page.addInitScript(() => localStorage.setItem('openapi-theme', 'light'));
+  for (const route of ['/en/ai/schemas/', '/zh-cn/ai/gin/']) {
+    await page.goto(siteURL(route));
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await expect(page.locator('canvas, [data-theme-toggle], .page-toc')).toHaveCount(0);
+    await expect(page.locator('article')).toBeVisible();
+    await expect(page.locator('.ai-raw')).toBeVisible();
+    await expect(page.locator('.sidebar .nav-group')).toHaveCount(2);
+    expect(await page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe('rgb(3, 5, 7)');
+  }
+  expect(decoration).toEqual([]);
+});
+
 // Retain reference-sized renders outside the source tree when requested by local QA.
 async function capture(page, name, testInfo) {
   const directory = process.env.SCREENSHOT_DIR || testInfo.outputPath('screenshots');
@@ -13,21 +32,22 @@ async function capture(page, name, testInfo) {
 // Read actual rendered canvas pixels rather than an implementation-specific state flag.
 async function pixels(page) { return page.locator('canvas[data-stars]').evaluate(canvas => canvas.toDataURL()); }
 
-test('chapter, audience, language, theme and code copying stay synchronized', async ({ page, context }, info) => {
+test('chapter, audience, language, dark appearance and code copying stay synchronized', async ({ page, context }, info) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  await page.addInitScript(() => localStorage.setItem('openapi-theme', 'light'));
   await page.goto(siteURL('/en/human/schemas/'));
   await page.getByRole('link', { name: 'Language', exact: true }).click();
-  await expect(page).toHaveURL(/\/zh-cn\/human\/schemas\/$/);
+  await page.waitForURL('**/zh-cn/human/schemas/', { waitUntil: 'load' });
   await page.getByRole('link', { name: 'AI', exact: true }).click();
-  await expect(page).toHaveURL(/\/zh-cn\/ai\/schemas\/$/);
-  await page.getByRole('button', { name: '外观主题', exact: true }).click();
+  await page.waitForURL('**/zh-cn/ai/schemas/', { waitUntil: 'load' });
+  await expect(page.locator('[data-theme-toggle]')).toHaveCount(0);
   await page.reload();
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.getByRole('button', { name: '复制代码', exact: true }).click();
   await expect(page.getByRole('button', { name: '复制代码', exact: true })).toHaveText('已复制');
   expect(await page.evaluate(() => navigator.clipboard.readText())).toContain('spec.Set(false)');
   await page.goto(siteURL('/en/ai/overview/'));
-  await capture(page, 'ai-light', info);
+  await capture(page, 'ai-dark', info);
 });
 
 test('stars animate, react to movement, pause and respect reduced motion', async ({ page }, info) => {
@@ -183,7 +203,7 @@ test('human and agent documents remain complete with JavaScript disabled', async
   await context.close();
 });
 
-// 验证发布子路径、静态资源和机器可读文档发现入口。
+// Verify the published base path, static assets and machine-readable discovery endpoints.
 test('Pages entry, assets and all manifest routes remain inside the published site', async ({ page, baseURL }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));

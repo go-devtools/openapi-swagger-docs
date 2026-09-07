@@ -1,4 +1,4 @@
-// A deterministic generator keeps the emblem stable across resize and theme changes.
+// A deterministic generator keeps the emblem stable across viewport changes.
 export function randomSequence(seed = 7319) {
   return () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
 }

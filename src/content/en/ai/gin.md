@@ -4,30 +4,24 @@ description: "Generate, inspect, mount and verify without changing business beha
 lang: "en"
 audience: "ai"
 chapter: "gin"
-source: "https://github.com/openapi-golang/gin-swagger/blob/9536d021c64f58bc8bf5149ea15dc50e5b207f60/docs/ai-integration.md"
+source: "https://github.com/openapi-golang/gin-swagger/blob/95c521470d1cb47891ece906189875a2cc534902/docs/ai-integration.md"
 ---
 
-## Preconditions
+## Integration
 
-Use Go 1.27.1, the application's actual Gin dependency and fixed real module versions. Set `GOWORK=off` and remove development replacements for independent acceptance. Download dependencies before invoking generation; its default budget is one minute.
+1. Pin Go 1.27.1, Gin 1.12.0, adapter and core versions.
+2. Generate `internal/apidoc`; import it through the application's actual module path.
+3. Register existing routes unchanged. Call `ginswagger.Mount(engine, apidoc.Bundle(), config)` before serving.
+4. Check source freshness in CI; compare actual responses before/after mounting.
 
-## Generate and mount
+## Runtime rules
 
-1. Run `gin-swagger generate --dir . --output ./internal/apidoc` from the application root.
-2. Import the generated package using the application's actual module path.
-3. Register existing routes normally, then invoke `ginswagger.Mount(engine, apidoc.Bundle(), config)` before serving.
-4. Run `gin-swagger check --dir . --output ./internal/apidoc` in CI.
+- `Config.OpenAPI`: core document settings. `Groups`: complete definitions. Tags: groups inside a definition. Group filters intersect `Include`.
+- Examples use Bearer only. Requests require explicit `UI.SubmitMethods`.
+- For builds after initialization with static escaped colons, capture complete `Engine.Routes()` into `Config.RegisteredRoutes` before Run/ServeHTTP. A stale snapshot is an error.
+- Encoding follows actual Engine flags. `UseEscapedPath` overrides `UseRawPath`; raw fallback can depend on parameter escapes. Inspect `x-gin-raw-path-note`.
+- Ambiguous handlers require evidence and centralized `Bindings` keyed by original METHOD/path. Never infer closure state from code addresses.
 
-Use the installed CLI at the adapter's fixed version. Never hand-edit `zz_openapi.gen.go`, wrap existing handlers to alter identity, or add documentation tags to DTOs.
+## Diagnostics
 
-## Explain uncertainty
-
-Use `gin-swagger explain --dir . --symbol module/pkg.DTO.Field` with the real symbol. For a handler response, select `--response 201`. Explanations contain origins and declarations; a successful explanation is not a successful runtime route validation.
-
-## UI settings
-
-`Config.Groups` creates complete document definitions; tags group operations within each document. Each group intersects `Config.Include`. The example uses Bearer only and disables tag filtering. `UI.SubmitMethods` must be explicit to permit requests.
-
-## Verification
-
-Compare existing route behavior before and after documentation mounting. Inspect selected-template diagnostics, runtime build-profile checks and actual HTTP samples. Preserve every unresolved diagnostic until a tested centralized rule or accurate source declaration resolves it.
+Use `gin-swagger explain --dir . --symbol module/pkg.DTO.Field` with a real symbol; add `--response 201` for a handler response. Keep unresolved effects visible. Do not edit generated files, add DTO tags or wrap business handlers to silence diagnostics.

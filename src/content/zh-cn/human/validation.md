@@ -4,7 +4,7 @@ description: "区分文档有效性、源码新鲜度和实际样本提供的证
 lang: "zh-cn"
 audience: "human"
 chapter: "validation"
-source: "https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/contracttest.md"
+source: "https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/contracttest.md"
 ---
 
 ## 三种不同的检查

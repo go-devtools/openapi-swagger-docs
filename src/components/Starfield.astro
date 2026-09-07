@@ -9,4 +9,7 @@ const { home = false, lang } = Astro.props;
 {home && <div class="star-controls">
   <button class="motion-toggle" data-motion-toggle data-pause={labels[lang].pause} data-resume={labels[lang].resume}>{labels[lang].pause}</button>
 </div>}
-<script>import '../scripts/stars';</script>
+<script>
+  // Fetch the decorative renderer only on pages that contain a star canvas.
+  if (document.querySelector('[data-stars]')) import('../scripts/stars');
+</script>

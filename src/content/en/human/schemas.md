@@ -4,7 +4,7 @@ description: "Preserve actual Go identities while describing the bytes your appl
 lang: "en"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/standalone-schema.md"
+source: "https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/standalone-schema.md"
 ---
 
 ## Project a source type
@@ -39,7 +39,7 @@ Read `.Value` for the value and `.Present` to distinguish absence. A zero-valued
 
 `Example.DataValue` represents logical data, while `SerializedValue` contains the actual wire representation. `externalValue` requires explicitly supplied offline example resources. XML metadata describes a contract; it does not select a serializer or prove how business code emits XML.
 
-Read the source reference for resource-aware `$defs`, embedded dependencies and bounded standalone output. [Native object details](https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/native-objects.md) describe migration and current limits.
+Read the source reference for resource-aware `$defs`, embedded dependencies and bounded standalone output. [Native object details](https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/native-objects.md) describe migration and current limits.
 
 ## Polymorphic branches
 
@@ -72,3 +72,15 @@ These checks validate document structure, including style values and explicit bo
 Native parameter checks resolve references before comparing names and locations. Operations can override the same inherited parameter, but cannot remove other Path Item parameters. A resulting parameter set may contain only one querystring parameter and cannot combine it with query parameters. External Path Items and aliases use explicitly supplied offline resources. Empty native query names remain present in `spec.Parameter.Name` serialization.
 
 Servers validate URL-template syntax, variable defaults and enum membership without contacting hosts. Links require a unique resolvable operation ID across the supplied description; literal parameter values remain ordinary data. These checks do not certify runtime URL selection, every serializer or arbitrary Schema satisfiability. See the pinned native object guide for diagnostics and boundaries.
+
+## Metadata and reusable names
+
+The native checker preserves required empty `info.title`, `info.version` and `license.name` strings while rejecting missing fields and incorrect types. Documents need at least one of `paths`, `webhooks` or `components`. All component names use ASCII letters, digits, dots, hyphens or underscores; nested property and `$defs` names retain their own naming freedom.
+
+Contact mailbox and relative URI checks run offline. License `identifier` and `url` are exclusive by presence. SPDX grammar, registry membership and legal applicability are not certified. Empty Request Body `content` is explicitly rejected under OpenAPI's implementation-defined allowance. Diagnostics identify the native field, including fields in supplied offline documents. See the pinned core guide for the complete tested scope.
+
+## Endpoint path bindings
+
+Each actual endpoint template needs matching path parameters in the Path Item or every operation, including QUERY and custom methods. Referenced Path Items are checked at each endpoint where they are used. Missing names, unused path parameters, repeated expressions and identical template hierarchies produce diagnostics. An empty Path Item retains the ACL exception.
+
+Literal paths follow the OpenAPI 3.2 ASCII and percent-encoding grammar; empty interior segments are invalid. Expression names preserve Unicode and case, and can contain characters such as `?`, `#` and `/`. These are name rules, not runtime parameter-value serialization. Component names, webhook names and callback expressions are not endpoint paths. The checker does not choose a router's otherwise ambiguous match or normalize equivalent percent spellings.

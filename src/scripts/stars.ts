@@ -1,8 +1,7 @@
 import { emblemPoints, randomSequence, projectPoint, stepSpring } from '../lib/constellation.mjs';
 
 // Stellar temperatures mix white, blue-white, yellow, amber and orange-red independently of shape.
-const darkColors = ['224,237,255', '116,177,248', '245,244,232', '255,209,133', '250,160,87', '185,213,250', '238,134,99'];
-const lightColors = ['61,92,130', '43,107,177', '95,106,122', '157,112,47', '179,97,42', '84,113,154', '159,80,54'];
+const starColors = ['224,237,255', '116,177,248', '245,244,232', '255,209,133', '250,160,87', '185,213,250', '238,134,99'];
 
 // One point-only renderer owns each field and stops work whenever its surface is not visible.
 document.querySelectorAll<HTMLCanvasElement>('canvas[data-stars]').forEach((canvas) => {
@@ -17,15 +16,14 @@ document.querySelectorAll<HTMLCanvasElement>('canvas[data-stars]').forEach((canv
   const pointer = { x: -1000, y: -1000, active: false, speed: 0 };
   const camera = { x: 0, y: 0, vx: 0, vy: 0 };
   const drag = { active: false, x: 0, y: 0, vx: 0, vy: 0, lastX: 0, lastY: 0, lastTime: 0 };
-  let width = 1, height = 1, contentBottom = 0, frame = 0, last = 0, clock = 0, paused = false, visible = true, light = false;
+  let width = 1, height = 1, contentBottom = 0, frame = 0, last = 0, clock = 0, paused = false, visible = true;
   let sprites: HTMLCanvasElement[] = [];
   const hit = canvas.parentElement?.querySelector<HTMLButtonElement>('[data-star-focus]');
   const motion = canvas.parentElement?.querySelector<HTMLButtonElement>('[data-motion-toggle]');
 
   // Cache circular stellar glow textures; every frame draws points with no connecting geometry.
   function makeSprites() {
-    light = document.documentElement.dataset.theme === 'light';
-    sprites = (light ? lightColors : darkColors).map(color => {
+    sprites = starColors.map(color => {
       const sprite = document.createElement('canvas'); sprite.width = sprite.height = 48;
       const brush = sprite.getContext('2d')!;
       const glow = brush.createRadialGradient(24, 24, 0, 24, 24, 24);
@@ -86,7 +84,7 @@ document.querySelectorAll<HTMLCanvasElement>('canvas[data-stars]').forEach((canv
       const y = star.y * height + pitch * star.depth * (home ? 70 : 35);
       const offset = still ? { x: 0, y: 0 } : disturb(star, x, y, dt, home ? 32 : 24);
       const twinkle = .75 + .25 * Math.sin(clock * .7 + star.phase);
-      point(x + offset.x, y + offset.y, star.size, star.color, (.16 + star.depth * .65) * twinkle * (light ? .75 : 1));
+      point(x + offset.x, y + offset.y, star.size, star.color, (.16 + star.depth * .65) * twinkle);
     }
     // Keep even the initial scattered volume below the mobile copy and action buttons.
     context.save();
@@ -185,7 +183,6 @@ document.querySelectorAll<HTMLCanvasElement>('canvas[data-stars]').forEach((canv
     else { drag.x = Math.max(-1.35, Math.min(1.35, drag.x + (event.key === 'ArrowRight' ? .22 : event.key === 'ArrowLeft' ? -.22 : 0))); drag.y = Math.max(-.8, Math.min(.8, drag.y + (event.key === 'ArrowDown' ? .16 : event.key === 'ArrowUp' ? -.16 : 0))); }
   });
   motion?.addEventListener('click', () => { paused = !paused; refresh(); });
-  window.addEventListener('themechange', () => { makeSprites(); refresh(); });
   document.addEventListener('visibilitychange', refresh);
   media.addEventListener('change', refresh);
   new ResizeObserver(resize).observe(canvas);

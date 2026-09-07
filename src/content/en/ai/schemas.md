@@ -4,61 +4,33 @@ description: "Preserve type identity, wire shape and explicit value presence."
 lang: "en"
 audience: "ai"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/native-objects.md"
+source: "https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/native-objects.md"
 ---
 
-## Inputs and outputs
+## Projection
 
-Use `compiler.Load` with actual build conditions, `Project.Type` or `TypeIn` with real Go type expressions, and `Project.Schema` for a specific direction, media type and codec. `Projection.StandaloneWithOptions` emits bounded offline `$defs` with resource-aware identities. Views are read-only and callbacks are synchronous.
+- `compiler.Load`: actual build conditions. `Project.Type`/`TypeIn`: real Go expressions.
+- `Project.Schema`: explicit direction, media type and codec. `Projection.StandaloneWithOptions`: bounded offline `$defs`.
+- Preserve imported/generic identity. Public views are immutable; callbacks are synchronous. Do not assume a custom codec uses JSON.
 
-## Presence rules
-
-Construct optional booleans with `spec.Set(value)`. Read `.Value` and `.Present`; never coerce absence to an explicitly supplied false during serialization. `spec.Set[any](nil)` represents explicit logical null.
+## Presence
 
 ```go
 operation := spec.Operation{Deprecated: spec.Set(false)}
 ```
 
-Import `github.com/openapi-golang/openapi/spec`. This is the pinned pre-1.0 API, not an assignment-compatible replacement for earlier plain boolean fields.
+Import `github.com/openapi-golang/openapi/spec`. Read `.Value` and `.Present`. Absence differs from false; `spec.Set[any](nil)` is explicit null. Enum descriptions must align with values. Comments do not prove runtime enforcement.
 
-## Interpretation rules
+## Native checks
 
-Do not infer JSON behavior for an owned custom codec. Preserve generic and imported declaration identity. Comments describe semantics; they are not proof of runtime enforcement. Enum labels must remain aligned with their values and must not invent missing descriptions.
+| Area | Required decision |
+| --- | --- |
+| Paths | Bind exact path parameters after references/inheritance; reject equivalent templates. |
+| HTTP | Compare resolved `(in, name)`; apply operation overrides; never mix query/querystring. |
+| Examples | `dataValue` and `serializedValue` may coexist; legacy `value` is exclusive. |
+| Discriminator | Use actual union/inheritance targets and a valid fallback; hints do not validate instances. |
+| XML | Provide required use-site names; metadata does not select a wire serializer. |
+| Tags/encoding | Preserve optional parent presence; reject cycles and mixed named/positional encoding. |
+| Metadata | Preserve required empty strings; validate component names; license URL/identifier are exclusive. |
 
-## Native object boundaries
-
-Example `dataValue` and `serializedValue` may coexist; legacy `value` is mutually exclusive with the native value fields. XML metadata does not select a serializer. Static XML use-site names are checked within the scope described below. Consult the exact pinned native object guide before using advanced fields.
-
-## Discriminator decisions
-
-List explicit mapping and default targets in the adjacent `oneOf`/`anyOf` candidates, or use actual `allOf` descendants of the discriminator parent. Aliases, offline anchors and transitive inheritance are resolved within the shared resource budget. When the discriminating property is optional, supply a `defaultMapping` that can accept its omission.
-
-Required-property proof follows explicit `required`, ordinary references, `allOf` constraints, every union alternative, and both conditional branches. It does not solve arbitrary satisfiability or certify dynamic scope from a static reference. For an unproven case, add an explicit constraint or an appropriate default; inspect the located `openapi.spec.discriminator.*` diagnostic.
-
-Discriminator hints do not change JSON Schema instance validation. Overlapping `oneOf` branches still fail; validating a parent alone does not automatically validate the mapped child. A fallback should exclude known values when necessary to keep union branches disjoint.
-
-## XML naming decisions
-
-At `application/xml`, `text/xml`, and `+xml` content uses, inspect `openapi.spec.xml.name.required`. Provide an explicit name for unnamed inline element/attribute schemas. Component names, property names, and property-array item names are inferred from physical locations after ordinary reference resolution; do not propagate a reference wrapper's name to its target or a root array's name to its items. Use `nodeType: "none"` for an intentional composition layer with no XML node.
-
-Static traversal checks reusable media, ordinary offline schema references, named properties, items/tuples and positive composition branches. `then`/`else` require `if` to participate. Cycles terminate within `MaxIndexBytes`. Unused schemas and JSON-only content do not imply XML use. Do not treat this as complete dynamic annotation evaluation, nested Encoding validation or XML wire-codec certification.
-
-## Native examples in the offline UI
-
-Request and response media examples now read `dataValue` and `serializedValue` directly. JSON data preserves false, zero, null, empty collections and JSON-looking strings. Explicit wire text is shown and submitted unchanged; paired examples also show **Data value**. Local browser checks cover exact JSON/XML/plain-text submissions, SSE text, reusable examples/media, selection, and manual edits. The source document keeps its native 3.2 fields.
-
-Use `serializedValue` for exact non-JSON body examples. This does not certify all parameter/header examples, form serializers, external example retrieval, or data-only XML serialization. Request execution still requires explicit configuration.
-
-## Tag and encoding decisions
-
-Construct `Tag.Parent` with `spec.Set(parent)`, inspect `.Value`/`.Present`, and leave it zero-valued for a root. Empty tag names are valid identities: `spec.Set("")` names an explicitly declared empty tag, not absence. Reject duplicate names, missing parents and cycles; preserve arbitrary string kinds. Do not claim native hierarchy UI support from ordinary tag grouping.
-
-Keep named and positional encodings mutually exclusive at each nesting level. `prefixEncoding` is an object array and `itemEncoding` is one object. Header references use the explicit offline resource graph. Positional media needs `itemSchema` or structural array evidence from types, items/tuples, ordinary references and positive compositions. Unused definitions, property arrays and cycles alone do not prove the outer array shape. Add an explicit constraint when dynamic or arbitrary instance logic is otherwise unproven.
-
-Field, style, boolean, container and combination checks do not implement a multipart codec or certify complete contentType grammar and UI submission. Consult `openapi.spec.tag.*` and `openapi.spec.encoding.*` diagnostics and the pinned guide.
-
-## HTTP context decisions
-
-Resolve Parameter references before comparing exact `(in, name)` identities. Reject duplicates within either Path Item or Operation lists, then apply same-identity Operation overrides and retain other inherited parameters. The effective set cannot mix query and querystring and cannot contain multiple querystring parameters. Handle `openapi.spec.parameter.duplicate`, `.querystring`, and `.reference.cycle` as blocking diagnostics. Do not add business DTO tags or rewrite routes to fix document construction.
-
-Keep required empty native Parameter names when serializing. Server templates and string defaults/enums are checked offline; application substitution remains a separate runtime concern. Resolve Link `operationId` case-sensitively to one physical Operation across the explicitly supplied OpenAPI resources; use `operationRef` when multi-document names clash. Preserve literal Link data, including false and null. Path Item reference field conflicts use the nearest explicit field for this check; runtime URL disambiguation is not certified.
+Read the fixed source guide before constructing advanced objects. These checks do not certify arbitrary schema satisfiability, runtime routing, XML/multipart serialization or every Swagger UI feature. Keep located diagnostics blocking.

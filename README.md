@@ -2,7 +2,7 @@
 
 [简体中文](README.zh-cn.md) · [Live documentation](https://openapi-golang.github.io/docs/en/)
 
-The bilingual documentation site for [openapi](https://github.com/openapi-golang/openapi) and [gin-swagger](https://github.com/openapi-golang/gin-swagger). Human guides and dedicated AI references share explicit chapter identities, with language, audience and light/dark theme controls in the header.
+The bilingual documentation site for [openapi](https://github.com/openapi-golang/openapi) and [gin-swagger](https://github.com/openapi-golang/gin-swagger). Human guides and dedicated AI references share explicit chapter identities, with language and audience controls in the header. All pages use the dark appearance. AI pages contain compact contracts and a prominent raw Markdown entry, without decorative animation.
 
 ## Development
 
@@ -37,7 +37,7 @@ The source references identify actual fixed product commits. This site is an int
 
 ## Star fields
 
-The homepage's individual stars gather into the organization's paired braces, stacked core and satellite nodes. Warm and cool stellar colors mix at different sizes and depths, without connecting lines. Perspective, slow orbital motion and twinkling keep the volume alive. Moving the pointer creates a local swirl that springs back; dragging rotates the cluster with inertia after release. Keyboard arrows rotate the hero and Home resets it. Reading-page margins use a sparse field with depth and local pointer response. The pause control, reduced-motion preference, page visibility and intersection state stop sustained animation when appropriate. Touch scrolling remains native.
+The homepage's individual stars gather into the organization's paired braces, stacked core and satellite nodes. Warm and cool stellar colors mix at different sizes and depths, without connecting lines. Perspective, slow orbital motion and twinkling keep the volume alive. Moving the pointer creates a local swirl that springs back; dragging rotates the cluster with inertia after release. Keyboard arrows rotate the hero and Home resets it. Human reading-page margins use a sparse field with depth and local pointer response. The pause control, reduced-motion preference, page visibility and intersection state stop sustained animation when appropriate. Touch scrolling remains native.
 
 All assets and browser scripts are local. The canvas is decorative; it cannot intercept document links or text selection. Project-owned source comments use English; Chinese reader content is authored localization.
 

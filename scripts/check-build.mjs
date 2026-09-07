@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
 import { base } from '../src/lib/urls.mjs';
 
-// 将公开 URL 映射到构建文件，并拒绝超出 Pages 前缀的链接。
+// Map public URLs to build files and reject links outside the Pages base path.
 function artifactPath(url) {
   assert(url.startsWith(base + '/'), `Route escapes the Pages base: ${url}`);
   return resolve(root, '.' + url.slice(base.length));
@@ -31,7 +31,11 @@ for (const item of manifest.documents) {
   const page = await readFile(join(artifactPath(item.url), 'index.html'), 'utf8');
   assert(page.includes(`<html lang="${item.lang}"`));
   assert(page.includes(item.title));
-  assert(page.includes('<article>') && page.includes('data-stars="reading"'));
+  assert(page.includes('<article>'));
+  assert.equal(page.includes('data-stars="reading"'), item.audience === 'human');
+  assert(page.includes('data-theme="dark"'));
+  assert(!page.includes('data-theme-toggle') && !page.includes('openapi-theme'));
+  if (item.audience === 'ai') assert(!page.includes('class="page-toc"'));
   const raw = await readFile(artifactPath(item.markdown), 'utf8');
   assert(raw.includes(source.replace(/^---\n[\s\S]*?\n---\n/, '').trim()));
   assert(item.source.match(/\/blob\/[0-9a-f]{40}\//));

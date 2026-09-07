@@ -1,8 +1,8 @@
-// 让开发、静态检查与 Pages 发布使用相同的项目路径。
+// Share the project base path across development, static checks and Pages deployment.
 export const site = 'https://openapi-golang.github.io';
 export const base = '/docs';
 
-// 为站内路由添加前缀，保留外部源码引用。
+// Prefix internal routes while preserving external source references.
 export function siteURL(path = '/') {
   return `${base}/${path.replace(/^\/+/, '')}`;
 }
