@@ -4,7 +4,7 @@ description: "Compile Go source into contracts. Keep framework behavior in adapt
 lang: "en"
 audience: "human"
 chapter: "overview"
-source: "https://github.com/openapi-golang/openapi/blob/f577090e4f47e3f7c194dc2868fb6ee9e01e6bb4/docs/adapter-sdk.md"
+source: "https://github.com/openapi-golang/openapi/blob/5a53f75a62b8a39c46f1f53d79d456eb510c6734/docs/adapter-sdk.md"
 ---
 
 ## How it fits together

@@ -4,7 +4,7 @@ description: "保留类型身份、线上结构和显式值存在性。"
 lang: "zh-cn"
 audience: "ai"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/f577090e4f47e3f7c194dc2868fb6ee9e01e6bb4/docs/native-objects.md"
+source: "https://github.com/openapi-golang/openapi/blob/5a53f75a62b8a39c46f1f53d79d456eb510c6734/docs/native-objects.md"
 ---
 
 ## 输入与输出
@@ -48,3 +48,11 @@ Discriminator 提示不会改变 JSON Schema 实例验证结果。`oneOf` 分支
 请求和响应的媒体示例现在直接读取 `dataValue` 与 `serializedValue`。JSON 数据保留 false、零、null、空集合及外观类似 JSON 的字符串；显式序列化文本原样展示和提交，配对示例另外展示 **Data value**。本地浏览器验证覆盖 JSON、XML、纯文本的实际提交字节、SSE 文本、可复用示例与媒体、选择切换和手动编辑，源文档保留原生 3.2 字段。
 
 需要精确的非 JSON 请求体示例时使用 `serializedValue`。这不代表参数与响应头示例、表单序列化、外部示例获取、只有逻辑值的 XML 序列化均已完整支持。执行请求仍需显式配置。
+
+## 标签与编码决策
+
+通过 `spec.Set(parent)` 构造 `Tag.Parent`，使用 `.Value`、`.Present` 读取，根标签保持零值。空名称是合法身份：`spec.Set("")` 引用显式声明的空名称标签，不表示缺省。拒绝重复名称、缺失父级和循环；保留任意字符串 kind。不得把普通标签分组当成原生层级 UI 支持。
+
+每层具名编码与位置编码均互斥；`prefixEncoding` 是对象数组，`itemEncoding` 是单个对象。Header 引用使用显式离线资源图。位置编码媒体需要 `itemSchema`，或从类型、数组项/元组、普通引用和正向组合得到数组结构证据。未使用定义、属性中的数组以及单纯循环均不证明外层数组形状。动态或任意实例逻辑无法证明时应提供明确约束。
+
+字段、style、布尔值、容器及组合校验不等于实现 multipart 编解码器，也不认证完整 contentType 语法和 UI 提交。检查 `openapi.spec.tag.*`、`openapi.spec.encoding.*` 诊断及固定版本指南。

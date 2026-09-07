@@ -4,7 +4,7 @@ description: "保留真实 Go 类型身份，描述应用实际收发的数据�
 lang: "zh-cn"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/f577090e4f47e3f7c194dc2868fb6ee9e01e6bb4/docs/standalone-schema.md"
+source: "https://github.com/openapi-golang/openapi/blob/5a53f75a62b8a39c46f1f53d79d456eb510c6734/docs/standalone-schema.md"
 ---
 
 ## 导出源码类型
@@ -39,7 +39,7 @@ body := spec.RequestBody{Required: spec.Set(true)}
 
 `Example.DataValue` 表示逻辑数据，`SerializedValue` 表示线上序列化结果。`externalValue` 必须使用显式提供的离线示例资源。XML 元数据只描述契约，不会选择序列化器，也不能证明业务代码实际如何输出 XML。
 
-源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/openapi-golang/openapi/blob/f577090e4f47e3f7c194dc2868fb6ee9e01e6bb4/docs/native-objects.md)说明了迁移方式和当前限制。
+源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/openapi-golang/openapi/blob/5a53f75a62b8a39c46f1f53d79d456eb510c6734/docs/native-objects.md)说明了迁移方式和当前限制。
 
 ## 多态分支
 
@@ -58,3 +58,11 @@ XML content 中的内联 element 或 attribute Schema，如果无法从组件或
 请求和响应的媒体示例现在直接读取 `dataValue` 与 `serializedValue`。JSON 数据保留 false、零、null、空集合及外观类似 JSON 的字符串；显式序列化文本原样展示和提交，配对示例另外展示 **Data value**。本地浏览器验证覆盖 JSON、XML、纯文本的实际提交字节、SSE 文本、可复用示例与媒体、选择切换和手动编辑，源文档保留原生 3.2 字段。
 
 需要精确的非 JSON 请求体示例时使用 `serializedValue`。这不代表参数与响应头示例、表单序列化、外部示例获取、只有逻辑值的 XML 序列化均已完整支持。执行请求仍需显式配置。
+
+## 标签层级与 multipart 结构
+
+使用 `spec.Tag{ Name: "items", Parent: spec.Set("resources") }` 指定父标签。`Tag.Parent` 现在是可选字符串：零值表示省略，`spec.Set("")` 则引用已经声明的空名称标签。早期直接赋字符串的代码需要迁移。标签名必须唯一，父标签必须存在，父级链不能成环。summary 和 kind 都是普通字符串，允许自定义 kind。原生层级元数据会保留在文档中，当前固定 UI 仍按普通标签分组展示。
+
+multipart 的具名 `encoding` 不能与同层的位置编码 `prefixEncoding`、`itemEncoding` 共存，嵌套编码同样遵守此规则。位置编码媒体需要 `itemSchema`，或由 `schema` 提供数组结构证据：数组类型、数组项与元组结构、普通引用或正向组合分支。本地及显式提供的离线引用保留基准 URI 和锚点，嵌套 Header 缺少资源时会报告具体位置。
+
+这些检查验证文档结构，包括 style 取值与显式布尔值，不代表已经认证 multipart 线上序列化、完整 contentType 语法、原生位置编码 UI 提交，或任意动态数组形状证明。精确边界见固定版本的原生对象指南。

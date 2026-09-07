@@ -4,7 +4,7 @@ description: "Preserve actual Go identities while describing the bytes your appl
 lang: "en"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/f577090e4f47e3f7c194dc2868fb6ee9e01e6bb4/docs/standalone-schema.md"
+source: "https://github.com/openapi-golang/openapi/blob/5a53f75a62b8a39c46f1f53d79d456eb510c6734/docs/standalone-schema.md"
 ---
 
 ## Project a source type
@@ -39,7 +39,7 @@ Read `.Value` for the value and `.Present` to distinguish absence. A zero-valued
 
 `Example.DataValue` represents logical data, while `SerializedValue` contains the actual wire representation. `externalValue` requires explicitly supplied offline example resources. XML metadata describes a contract; it does not select a serializer or prove how business code emits XML.
 
-Read the source reference for resource-aware `$defs`, embedded dependencies and bounded standalone output. [Native object details](https://github.com/openapi-golang/openapi/blob/f577090e4f47e3f7c194dc2868fb6ee9e01e6bb4/docs/native-objects.md) describe migration and current limits.
+Read the source reference for resource-aware `$defs`, embedded dependencies and bounded standalone output. [Native object details](https://github.com/openapi-golang/openapi/blob/5a53f75a62b8a39c46f1f53d79d456eb510c6734/docs/native-objects.md) describe migration and current limits.
 
 ## Polymorphic branches
 
@@ -58,3 +58,11 @@ The checker applies this rule to XML content on requests, responses, parameters 
 Request and response media examples now read `dataValue` and `serializedValue` directly. JSON data preserves false, zero, null, empty collections and JSON-looking strings. Explicit wire text is shown and submitted unchanged; paired examples also show **Data value**. Local browser checks cover exact JSON/XML/plain-text submissions, SSE text, reusable examples/media, selection, and manual edits. The source document keeps its native 3.2 fields.
 
 Use `serializedValue` for exact non-JSON body examples. This does not certify all parameter/header examples, form serializers, external example retrieval, or data-only XML serialization. Request execution still requires explicit configuration.
+
+## Tag hierarchy and multipart structure
+
+Use `spec.Tag{ Name: "items", Parent: spec.Set("resources") }` for an explicit parent. `Tag.Parent` is an optional string: the zero value omits it, while `spec.Set("")` refers to a declared tag whose name is empty. Earlier plain-string assignments must be migrated. Names must be unique, every parent must exist, and parent chains cannot cycle. Summary and kind remain ordinary strings; custom kinds are allowed. Native hierarchy metadata is preserved in the document, but the pinned UI still presents ordinary tag groups.
+
+For multipart, named `encoding` cannot coexist with positional `prefixEncoding` or `itemEncoding` at the same level. This also applies to nested encodings. Positional media requires `itemSchema` or array evidence in `schema`: an array type, items/tuple structure, ordinary references, or positive composition branches. Local and explicitly supplied offline references retain their base URI and anchors. Missing nested Header resources produce located diagnostics.
+
+These checks validate document structure, including style values and explicit booleans. They do not certify multipart wire serializers, complete contentType grammar, native positional UI submission, or arbitrary dynamic array-shape proofs. See the pinned native object guide for the precise boundaries.

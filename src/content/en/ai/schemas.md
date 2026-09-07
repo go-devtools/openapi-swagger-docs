@@ -4,7 +4,7 @@ description: "Preserve type identity, wire shape and explicit value presence."
 lang: "en"
 audience: "ai"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/f577090e4f47e3f7c194dc2868fb6ee9e01e6bb4/docs/native-objects.md"
+source: "https://github.com/openapi-golang/openapi/blob/5a53f75a62b8a39c46f1f53d79d456eb510c6734/docs/native-objects.md"
 ---
 
 ## Inputs and outputs
@@ -48,3 +48,11 @@ Static traversal checks reusable media, ordinary offline schema references, name
 Request and response media examples now read `dataValue` and `serializedValue` directly. JSON data preserves false, zero, null, empty collections and JSON-looking strings. Explicit wire text is shown and submitted unchanged; paired examples also show **Data value**. Local browser checks cover exact JSON/XML/plain-text submissions, SSE text, reusable examples/media, selection, and manual edits. The source document keeps its native 3.2 fields.
 
 Use `serializedValue` for exact non-JSON body examples. This does not certify all parameter/header examples, form serializers, external example retrieval, or data-only XML serialization. Request execution still requires explicit configuration.
+
+## Tag and encoding decisions
+
+Construct `Tag.Parent` with `spec.Set(parent)`, inspect `.Value`/`.Present`, and leave it zero-valued for a root. Empty tag names are valid identities: `spec.Set("")` names an explicitly declared empty tag, not absence. Reject duplicate names, missing parents and cycles; preserve arbitrary string kinds. Do not claim native hierarchy UI support from ordinary tag grouping.
+
+Keep named and positional encodings mutually exclusive at each nesting level. `prefixEncoding` is an object array and `itemEncoding` is one object. Header references use the explicit offline resource graph. Positional media needs `itemSchema` or structural array evidence from types, items/tuples, ordinary references and positive compositions. Unused definitions, property arrays and cycles alone do not prove the outer array shape. Add an explicit constraint when dynamic or arbitrary instance logic is otherwise unproven.
+
+Field, style, boolean, container and combination checks do not implement a multipart codec or certify complete contentType grammar and UI submission. Consult `openapi.spec.tag.*` and `openapi.spec.encoding.*` diagnostics and the pinned guide.
