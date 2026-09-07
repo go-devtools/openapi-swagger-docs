@@ -4,7 +4,7 @@ description: "Preserve actual Go identities while describing the bytes your appl
 lang: "en"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/standalone-schema.md"
+source: "https://github.com/openapi-golang/openapi/blob/365458867d54082e317bbb1f1770e6b34cdb7f25/docs/standalone-schema.md"
 ---
 
 ## Project a source type
@@ -39,7 +39,7 @@ Read `.Value` for the value and `.Present` to distinguish absence. A zero-valued
 
 `Example.DataValue` represents logical data, while `SerializedValue` contains the actual wire representation. `externalValue` requires explicitly supplied offline example resources. XML metadata describes a contract; it does not select a serializer or prove how business code emits XML.
 
-Read the source reference for resource-aware `$defs`, embedded dependencies and bounded standalone output. [Native object details](https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/native-objects.md) describe migration and current limits.
+Read the source reference for resource-aware `$defs`, embedded dependencies and bounded standalone output. [Native object details](https://github.com/openapi-golang/openapi/blob/365458867d54082e317bbb1f1770e6b34cdb7f25/docs/native-objects.md) describe migration and current limits.
 
 ## Polymorphic branches
 

@@ -4,7 +4,7 @@ description: "通过结构化结果区分过期输出、无效文档和未知效
 lang: "zh-cn"
 audience: "ai"
 chapter: "validation"
-source: "https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/references.md"
+source: "https://github.com/openapi-golang/openapi/blob/365458867d54082e317bbb1f1770e6b34cdb7f25/docs/references.md"
 ---
 
 ## 流程
@@ -25,3 +25,5 @@ source: "https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc
 | 引用／预算错误 | 明确提供离线资源或有界预算；不得返回部分成功。 |
 
 `CheckWithOptions` 接收 `BaseURI`、`Resources`、`ExampleResources`；不自动抓取缺失引用。源码新鲜度、文档有效性、运行时一致性分别证明。保留 `implementation: "not-proven"`；选中路由仍须通过 Build。
+
+`gin-swagger check --spec FILE --max-bytes=8388608 --timeout=30s` 通过公开 `checkio.ReadFile` 限制本地输入；非普通文件、超限、取消和阶段超时返回失败。取消为协作式。整段查询 UI 只读，流式单项面板独立于完整消息 Schema。文档合法不证明客户端序列化正确。

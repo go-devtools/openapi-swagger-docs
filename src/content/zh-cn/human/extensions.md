@@ -4,7 +4,7 @@ description: "通过公开编译视图和中立效果描述框架行为。"
 lang: "zh-cn"
 audience: "human"
 chapter: "extensions"
-source: "https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/adapter-sdk.md"
+source: "https://github.com/openapi-golang/openapi/blob/365458867d54082e317bbb1f1770e6b34cdb7f25/docs/adapter-sdk.md"
 ---
 
 ## 明确职责归属

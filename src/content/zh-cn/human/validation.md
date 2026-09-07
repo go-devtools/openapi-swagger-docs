@@ -4,7 +4,7 @@ description: "区分文档有效性、源码新鲜度和实际样本提供的证
 lang: "zh-cn"
 audience: "human"
 chapter: "validation"
-source: "https://github.com/openapi-golang/openapi/blob/f019ef8848aaea8077d3f3dc5dcd05512d25e299/docs/contracttest.md"
+source: "https://github.com/openapi-golang/openapi/blob/365458867d54082e317bbb1f1770e6b34cdb7f25/docs/contracttest.md"
 ---
 
 ## 三种不同的检查
@@ -38,3 +38,13 @@ GOWORK=off go run ./cmd/openapi check --spec ./testdata/golden/openapi32-full.js
 检查器在官方 Schema 基础上补充了有测试覆盖的 Example、Discriminator 和 XML 字段检查及显式布尔存在性，但尚未认证所有 discriminator 组合继承场景或 XML 使用位置的名称推断。Swagger UI 渲染能力也独立于文档有效性。
 
 独立验证器接收预加载资源，使用另一个引擎检查实际样本。源码参考说明了参数、预算、递归和流式数据的限制。
+
+## 限制本地输入
+
+```sh
+gin-swagger check --spec ./openapi.json --max-bytes=8388608 --timeout=30s
+```
+
+两个 CLI 通过核心可选的 `checkio.ReadFile` 读取明确指定的本地文件。Gin 默认输入上限为 8 MiB，允许文件恰好达到边界。超限、非普通文件、取消和超时都会返回失败，不会继续报告成功。超时在读取与有界验证阶段之间协作检查，不能强制中断内核调用。`--max-bytes` 仅适用于 `check --spec`。
+
+共享 UI 将流式 `itemSchema` 与完整消息 Schema 分开展示，并保留有限 NDJSON/SSE 的分帧。整段查询参数保持只读，因为固定渲染器提交时会遗漏其值。QUERY 需要显式开启；未显示的扩展方法和标签元数据会产生兼容性提示。将页面视作可用客户端前，请查看[实际验证的 UI 边界](https://github.com/openapi-golang/openapi/blob/365458867d54082e317bbb1f1770e6b34cdb7f25/docs/swaggerui-compatibility.md)。
