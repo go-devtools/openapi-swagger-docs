@@ -4,7 +4,7 @@ description: "Separate document validity, source freshness and evidence from rea
 lang: "en"
 audience: "human"
 chapter: "validation"
-source: "https://github.com/openapi-golang/openapi/blob/dbb920fec4ca18faf8f56f789bbf1a1ef209e674/docs/contracttest.md"
+source: "https://github.com/openapi-golang/openapi/blob/f577090e4f47e3f7c194dc2868fb6ee9e01e6bb4/docs/contracttest.md"
 ---
 
 ## Three distinct checks

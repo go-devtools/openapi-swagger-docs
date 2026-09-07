@@ -4,7 +4,7 @@ description: "保留类型身份、线上结构和显式值存在性。"
 lang: "zh-cn"
 audience: "ai"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/dbb920fec4ca18faf8f56f789bbf1a1ef209e674/docs/native-objects.md"
+source: "https://github.com/openapi-golang/openapi/blob/f577090e4f47e3f7c194dc2868fb6ee9e01e6bb4/docs/native-objects.md"
 ---
 
 ## 输入与输出
@@ -42,3 +42,9 @@ Discriminator 提示不会改变 JSON Schema 实例验证结果。`oneOf` 分支
 对 `application/xml`、`text/xml` 及 `+xml` content，检查 `openapi.spec.xml.name.required`。内联 element/attribute Schema 无法推断名称时，应补充明确名称。组件名、属性名和属性数组的项名称按普通引用解析后的实际位置推断，不得把引用包装的名称传给目标，也不得把根数组名称传给数组项。组合层刻意不生成 XML 节点时使用 `nodeType: "none"`。
 
 静态遍历覆盖复用媒体、普通离线 Schema 引用、具名属性、数组项/元组及正向组合分支。`then`/`else` 仅在存在 `if` 时参与。循环遍历受 `MaxIndexBytes` 限制。未使用的 Schema 和仅 JSON content 不代表 XML 使用。不得将这些检查视为完整动态注解求值、嵌套 Encoding 验证或 XML 线上编解码认证。
+
+## 离线 UI 中的原生示例
+
+请求和响应的媒体示例现在直接读取 `dataValue` 与 `serializedValue`。JSON 数据保留 false、零、null、空集合及外观类似 JSON 的字符串；显式序列化文本原样展示和提交，配对示例另外展示 **Data value**。本地浏览器验证覆盖 JSON、XML、纯文本的实际提交字节、SSE 文本、可复用示例与媒体、选择切换和手动编辑，源文档保留原生 3.2 字段。
+
+需要精确的非 JSON 请求体示例时使用 `serializedValue`。这不代表参数与响应头示例、表单序列化、外部示例获取、只有逻辑值的 XML 序列化均已完整支持。执行请求仍需显式配置。

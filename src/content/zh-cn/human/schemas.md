@@ -4,7 +4,7 @@ description: "保留真实 Go 类型身份，描述应用实际收发的数据�
 lang: "zh-cn"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/dbb920fec4ca18faf8f56f789bbf1a1ef209e674/docs/standalone-schema.md"
+source: "https://github.com/openapi-golang/openapi/blob/f577090e4f47e3f7c194dc2868fb6ee9e01e6bb4/docs/standalone-schema.md"
 ---
 
 ## 导出源码类型
@@ -39,7 +39,7 @@ body := spec.RequestBody{Required: spec.Set(true)}
 
 `Example.DataValue` 表示逻辑数据，`SerializedValue` 表示线上序列化结果。`externalValue` 必须使用显式提供的离线示例资源。XML 元数据只描述契约，不会选择序列化器，也不能证明业务代码实际如何输出 XML。
 
-源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/openapi-golang/openapi/blob/dbb920fec4ca18faf8f56f789bbf1a1ef209e674/docs/native-objects.md)说明了迁移方式和当前限制。
+源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/openapi-golang/openapi/blob/f577090e4f47e3f7c194dc2868fb6ee9e01e6bb4/docs/native-objects.md)说明了迁移方式和当前限制。
 
 ## 多态分支
 
@@ -52,3 +52,9 @@ body := spec.RequestBody{Required: spec.Set(true)}
 XML content 中的内联 element 或 attribute Schema，如果无法从组件或属性推断名称，就需要设置 `xml.name`。属性下的数组项继承属性名；根数组的包装名称不会为它的项提供名称。普通引用保留目标的实际命名位置，包括离线资源。名称缺失时，检查器在对应 Schema 输出 `openapi.spec.xml.name.required`。
 
 规则适用于请求、响应、参数和 Header 中的 XML content，不影响只用于 JSON 的 Schema。静态组合和数组遍历共用引用图的资源预算。动态注解收集、嵌套 Encoding 的内容类型及实际 XML 编解码行为不在本次检查范围，完整边界见固定版本的原生对象指南。
+
+## 离线 UI 中的原生示例
+
+请求和响应的媒体示例现在直接读取 `dataValue` 与 `serializedValue`。JSON 数据保留 false、零、null、空集合及外观类似 JSON 的字符串；显式序列化文本原样展示和提交，配对示例另外展示 **Data value**。本地浏览器验证覆盖 JSON、XML、纯文本的实际提交字节、SSE 文本、可复用示例与媒体、选择切换和手动编辑，源文档保留原生 3.2 字段。
+
+需要精确的非 JSON 请求体示例时使用 `serializedValue`。这不代表参数与响应头示例、表单序列化、外部示例获取、只有逻辑值的 XML 序列化均已完整支持。执行请求仍需显式配置。

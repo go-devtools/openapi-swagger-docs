@@ -4,7 +4,7 @@ description: "Preserve type identity, wire shape and explicit value presence."
 lang: "en"
 audience: "ai"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/dbb920fec4ca18faf8f56f789bbf1a1ef209e674/docs/native-objects.md"
+source: "https://github.com/openapi-golang/openapi/blob/f577090e4f47e3f7c194dc2868fb6ee9e01e6bb4/docs/native-objects.md"
 ---
 
 ## Inputs and outputs
@@ -42,3 +42,9 @@ Discriminator hints do not change JSON Schema instance validation. Overlapping `
 At `application/xml`, `text/xml`, and `+xml` content uses, inspect `openapi.spec.xml.name.required`. Provide an explicit name for unnamed inline element/attribute schemas. Component names, property names, and property-array item names are inferred from physical locations after ordinary reference resolution; do not propagate a reference wrapper's name to its target or a root array's name to its items. Use `nodeType: "none"` for an intentional composition layer with no XML node.
 
 Static traversal checks reusable media, ordinary offline schema references, named properties, items/tuples and positive composition branches. `then`/`else` require `if` to participate. Cycles terminate within `MaxIndexBytes`. Unused schemas and JSON-only content do not imply XML use. Do not treat this as complete dynamic annotation evaluation, nested Encoding validation or XML wire-codec certification.
+
+## Native examples in the offline UI
+
+Request and response media examples now read `dataValue` and `serializedValue` directly. JSON data preserves false, zero, null, empty collections and JSON-looking strings. Explicit wire text is shown and submitted unchanged; paired examples also show **Data value**. Local browser checks cover exact JSON/XML/plain-text submissions, SSE text, reusable examples/media, selection, and manual edits. The source document keeps its native 3.2 fields.
+
+Use `serializedValue` for exact non-JSON body examples. This does not certify all parameter/header examples, form serializers, external example retrieval, or data-only XML serialization. Request execution still requires explicit configuration.
