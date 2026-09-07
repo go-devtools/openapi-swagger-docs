@@ -18,7 +18,7 @@ GOWORK=off go run ./cmd/gin-swagger check --dir ./examples/basic --output ./inte
 GOWORK=off go run ./examples/basic
 ```
 
-Open `http://127.0.0.1:8080/docs/`. For an application, install the CLI at the same fixed adapter version as its `go.mod`; the [manifest](/manifest.json) records this documentation's source versions. Private repository access must already be available to Go.
+Open `http://127.0.0.1:8080/docs/`. For an application, install the CLI at the same fixed adapter version as its `go.mod`; the [manifest](/docs/manifest.json) records this documentation's source versions. Private repository access must already be available to Go.
 
 ## Keep startup integration small
 

@@ -1,4 +1,5 @@
 ---
+import { siteURL } from '../lib/urls.mjs';
 import Icon from './Icon.astro';
 import { labels, docURL, type Audience, type Language } from '../lib/site';
 // Preserve chapter identity when switching between the two localized audiences.
@@ -8,7 +9,7 @@ const l = labels[lang];
 const other = lang === 'en' ? 'zh-cn' : 'en';
 ---
 <header class="site-header">
-  <a class="brand" href={`/${lang}/`} aria-label="openapi home">openapi</a>
+  <a class="brand" href={siteURL(`/${lang}/`)} aria-label="openapi home">openapi</a>
   <nav class="primary-nav" aria-label={l.docs}>
     <a href={docURL(lang, audience)}>{l.docs}</a>
     <a href={docURL(lang, audience, 'gin')}>{l.examples}</a>
@@ -19,9 +20,9 @@ const other = lang === 'en' ? 'zh-cn' : 'en';
       <span class="dark-icon"><Icon name="moon" /></span><span class="light-icon"><Icon name="sun" /></span>
       <span class="dark-label">{l.dark}</span><span class="light-label">{l.light}</span>
     </button>
-    <a class="control" href={home ? `/${other}/` : docURL(other, audience, chapter)} hreflang={other} aria-label={l.language} title={other === 'en' ? 'Switch to English' : '切换为简体中文'}><Icon name="globe" /><span>{lang === 'en' ? 'EN' : '中文'}</span></a>
+    <a class="control" href={home ? siteURL(`/${other}/`) : docURL(other, audience, chapter)} hreflang={other} aria-label={l.language} title={other === 'en' ? 'Switch to English' : '切换为简体中文'}><Icon name="globe" /><span>{lang === 'en' ? 'EN' : '中文'}</span></a>
     <nav class="audience-switch" aria-label={l.audience}>
-      <a href={home ? `/${lang}/` : docURL(lang, 'human', chapter)} aria-current={audience === 'human' ? 'true' : undefined}>{l.human}</a>
+      <a href={home ? siteURL(`/${lang}/`) : docURL(lang, 'human', chapter)} aria-current={audience === 'human' ? 'true' : undefined}>{l.human}</a>
       <a href={docURL(lang, 'ai', chapter)} aria-current={audience === 'ai' ? 'true' : undefined}>AI</a>
     </nav>
   </div>

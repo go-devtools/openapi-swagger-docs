@@ -1,4 +1,5 @@
 ---
+import { siteURL } from '../lib/urls.mjs';
 import Header from '../components/Header.astro';
 import { labels, type Language, type Audience } from '../lib/site';
 import '../styles/site.css';
@@ -11,9 +12,10 @@ const { title, description, lang, audience = 'human', chapter, home = false } = 
   <head>
     <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>{title} · openapi-golang</title><meta name="description" content={description} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
     <meta name="color-scheme" content="dark light" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="alternate" type="text/plain" href="/llms.txt" title="AI documentation index" />
+    <link rel="icon" href={siteURL("/favicon.svg")} type="image/svg+xml" />
+    <link rel="alternate" type="text/plain" href={siteURL("/llms.txt")} title="AI documentation index" />
     <script is:inline>
       // Apply a saved preference before first paint; storage may be unavailable.
       try { const theme = localStorage.getItem('openapi-theme'); if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme; } catch {}

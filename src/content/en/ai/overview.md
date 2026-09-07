@@ -27,9 +27,9 @@ For a consumer application, use its real source directory and install the CLI at
 
 ## Machine-readable entry points
 
-- [llms.txt](/llms.txt): compact discovery index.
-- [llms-full.txt](/llms-full.txt): complete authored AI corpus in both explicit languages.
-- [manifest.json](/manifest.json): fixed upstream versions, content identities and source SHA-256 digests.
+- [llms.txt](/docs/llms.txt): compact discovery index.
+- [llms-full.txt](/docs/llms-full.txt): complete authored AI corpus in both explicit languages.
+- [manifest.json](/docs/manifest.json): fixed upstream versions, content identities and source SHA-256 digests.
 
 ## Evidence rules
 

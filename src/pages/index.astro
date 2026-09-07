@@ -1,3 +1,4 @@
 ---
-return Astro.redirect('/en/');
+import { siteURL } from '../lib/urls.mjs';
+return Astro.redirect(siteURL('/en/'));
 ---

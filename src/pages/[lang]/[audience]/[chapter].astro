@@ -1,4 +1,5 @@
 ---
+import { siteURL } from '../../../lib/urls.mjs';
 import Shell from '../../../layouts/Shell.astro';
 import Starfield from '../../../components/Starfield.astro';
 import Icon from '../../../components/Icon.astro';
@@ -31,7 +32,7 @@ const headings = doc.getHeadings().filter(h => h.depth === 2);
     <main id="main" class="document-main">
       <div class="document-heading"><h1>{title}</h1><p>{description}</p></div>
       <article><Content /></article>
-      <footer class="document-footer"><a href={`/raw/${lang}/${audience}/${chapter}.md`}>{l.raw}</a><a href={source}>{l.source}<Icon name="arrow" size={16} /></a></footer>
+      <footer class="document-footer"><a href={siteURL(`/raw/${lang}/${audience}/${chapter}.md`)}>{l.raw}</a><a href={source}>{l.source}<Icon name="arrow" size={16} /></a></footer>
     </main>
     <aside class="page-toc"><nav aria-label={l.toc}><p>{l.toc}</p>{headings.map(h => <a href={`#${h.slug}`}>{h.text}</a>)}</nav></aside>
   </div>

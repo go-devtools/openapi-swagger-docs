@@ -18,7 +18,7 @@ GOWORK=off go run ./cmd/gin-swagger check --dir ./examples/basic --output ./inte
 GOWORK=off go run ./examples/basic
 ```
 
-打开 `http://127.0.0.1:8080/docs/`。用于业务项目时，CLI 应安装为与 `go.mod` 相同的固定适配器版本。[版本清单](/manifest.json)记录本套文档参考的源码版本。Go 需要已经具备私有仓库访问权限。
+打开 `http://127.0.0.1:8080/docs/`。用于业务项目时，CLI 应安装为与 `go.mod` 相同的固定适配器版本。[版本清单](/docs/manifest.json)记录本套文档参考的源码版本。Go 需要已经具备私有仓库访问权限。
 
 ## 保持启动接入简洁
 

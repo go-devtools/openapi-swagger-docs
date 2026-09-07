@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { siteURL } from '../../src/lib/urls.mjs';
 import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -14,7 +15,7 @@ async function pixels(page) { return page.locator('canvas[data-stars]').evaluate
 
 test('chapter, audience, language, theme and code copying stay synchronized', async ({ page, context }, info) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
-  await page.goto('/en/human/schemas/');
+  await page.goto(siteURL('/en/human/schemas/'));
   await page.getByRole('link', { name: 'Language', exact: true }).click();
   await expect(page).toHaveURL(/\/zh-cn\/human\/schemas\/$/);
   await page.getByRole('link', { name: 'AI', exact: true }).click();
@@ -25,12 +26,12 @@ test('chapter, audience, language, theme and code copying stay synchronized', as
   await page.getByRole('button', { name: '复制代码', exact: true }).click();
   await expect(page.getByRole('button', { name: '复制代码', exact: true })).toHaveText('已复制');
   expect(await page.evaluate(() => navigator.clipboard.readText())).toContain('spec.Set(false)');
-  await page.goto('/en/ai/overview/');
+  await page.goto(siteURL('/en/ai/overview/'));
   await capture(page, 'ai-light', info);
 });
 
 test('stars animate, react to movement, pause and respect reduced motion', async ({ page }, info) => {
-  await page.goto('/en/');
+  await page.goto(siteURL('/en/'));
   await expect(page.locator('canvas')).toHaveAttribute('data-rendered', 'true');
   const before = await pixels(page);
   await page.mouse.move(1110, 385);
@@ -52,18 +53,18 @@ test('stars animate, react to movement, pause and respect reduced motion', async
   expect(await pixels(page)).toBe(reduced);
 });
 
-test('reading margins, links and raw agent content work without external requests', async ({ page }, info) => {
+test('reading margins, links and raw agent content work without external requests', async ({ page, baseURL }, info) => {
   const external = [];
-  page.on('request', request => { if (!new URL(request.url()).hostname.match(/^(127\.0\.0\.1|localhost)$/)) external.push(request.url()); });
-  await page.goto('/en/human/overview/');
+  page.on('request', request => { if (new URL(request.url()).origin !== new URL(baseURL).origin) external.push(request.url()); });
+  await page.goto(siteURL('/en/human/overview/'));
   await expect(page.locator('canvas')).toHaveAttribute('data-rendered', 'true');
   await capture(page, 'reading-dark', info);
   await page.getByRole('link', { name: 'Raw Markdown', exact: true }).click();
   await expect(page.locator('body')).toContainText('# One core. Your framework.');
-  const index = await page.request.get('/llms.txt');
+  const index = await page.request.get(siteURL('/llms.txt'));
   expect(index.ok()).toBe(true);
   expect(await index.text()).toContain('/raw/zh-cn/ai/overview.md');
-  const manifest = await (await page.request.get('/manifest.json')).json();
+  const manifest = await (await page.request.get(siteURL('/manifest.json'))).json();
   expect(manifest.documents).toHaveLength(20);
   expect(external).toEqual([]);
 });
@@ -78,7 +79,7 @@ test('reduced motion synchronizes even without a media change notification', asy
       return result;
     };
   });
-  await page.goto('/en/');
+  await page.goto(siteURL('/en/'));
   await expect(page.locator('canvas')).toHaveAttribute('data-rendered', 'true');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(page.getByRole('button', { name: 'Animate stars', exact: true })).toBeDisabled();
@@ -92,7 +93,7 @@ test('phone and tablet layouts keep controls and article width inside the viewpo
   for (const width of [390, 631, 768]) {
     await page.setViewportSize({ width, height: 844 });
     for (const route of ['/en/', '/zh-cn/human/gin/', '/en/ai/schemas/']) {
-      await page.goto(route);
+      await page.goto(siteURL(route));
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
       await expect(page.locator('.preferences')).toBeVisible();
@@ -125,7 +126,7 @@ test('dragging adds visible rotation, keeps inertia and reforms the same cluster
     const page = await context.newPage();
     await page.clock.install({ time: new Date(0) });
     await page.clock.pauseAt(new Date(1000));
-    await page.goto('/en/');
+    await page.goto(siteURL('/en/'));
     await expect(page.locator('canvas')).toHaveAttribute('data-rendered', 'true');
     await page.clock.runFor(3000);
     await page.mouse.move(1030, 365);
@@ -173,11 +174,45 @@ test('dragging adds visible rotation, keeps inertia and reforms the same cluster
 test('human and agent documents remain complete with JavaScript disabled', async ({ browser, baseURL }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
   const page = await context.newPage();
-  await page.goto('/zh-cn/ai/validation/');
+  await page.goto(siteURL('/zh-cn/ai/validation/'));
   await expect(page.getByRole('heading', { name: '诊断决策流程。', exact: true })).toBeVisible();
   await expect(page.locator('article')).toContainText('openapi.generate.stale');
   await page.getByRole('link', { name: '人类', exact: true }).click();
   await expect(page).toHaveURL(/\/zh-cn\/human\/validation\/$/);
   await expect(page.locator('article table')).toBeVisible();
   await context.close();
+});
+
+// 验证发布子路径、静态资源和机器可读文档发现入口。
+test('Pages entry, assets and all manifest routes remain inside the published site', async ({ page, baseURL }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  page.on('response', response => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
+  await page.goto(siteURL());
+  await expect(page).toHaveURL(new URL(siteURL('/en/'), baseURL).href);
+  await expect(page).toHaveTitle('OpenAPI, from your Go code. · openapi-golang');
+  await expect(page.locator('canvas')).toHaveAttribute('data-rendered', 'true');
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', siteURL('/favicon.svg'));
+  await page.getByRole('link', { name: 'Language', exact: true }).click();
+  await expect(page).toHaveURL(new URL(siteURL('/zh-cn/'), baseURL).href);
+  const manifest = await (await page.request.get(siteURL('/manifest.json'))).json();
+  for (const document of manifest.documents) {
+    for (const path of [document.url, document.markdown]) {
+      expect(path).toMatch(/^\/docs\//);
+      const response = await page.request.get(path);
+      expect(response.status(), path).toBe(200);
+      expect(await response.text()).toContain(document.title);
+    }
+  }
+  for (const endpoint of ['/llms.txt', '/llms-full.txt']) {
+    const response = await page.request.get(siteURL(endpoint));
+    expect(response.status()).toBe(200);
+    const text = await response.text();
+    for (const [, path] of text.matchAll(/\]\((\/[^)]+)\)/g)) {
+      expect(path).toMatch(/^\/docs\//);
+      expect((await page.request.get(path)).status(), path).toBe(200);
+    }
+  }
+  expect(errors).toEqual([]);
 });

@@ -23,7 +23,7 @@ GOWORK=off go run ./cmd/gin-swagger generate --dir ./examples/basic --output ./i
 GOWORK=off go run ./cmd/gin-swagger check --dir ./examples/basic --output ./internal/apidoc
 ```
 
-Continue with the [Gin guide](/en/human/gin/) to run the application and inspect its documentation.
+Continue with the [Gin guide](/docs/en/human/gin/) to run the application and inspect its documentation.
 
 ## Choose the right package
 
@@ -39,4 +39,4 @@ Continue with the [Gin guide](/en/human/gin/) to run the application and inspect
 
 Automatic derivation, explicit declaration, centralized adaptation and unresolved behavior are different outcomes. A declared constraint describes a contract; it does not prove the server enforces it. Unknown effects and ambiguous handler identities produce diagnostics instead of guessed responses.
 
-The SDK is pre-1.0. Pin both modules and the CLI, and read [the version manifest](/manifest.json) before adopting an API. Native object validation still has documented limits, including complete discriminator inheritance and XML name inference. See [validation](/en/human/validation/) for the checks that establish useful evidence.
+The SDK is pre-1.0. Pin both modules and the CLI, and read [the version manifest](/docs/manifest.json) before adopting an API. Native object validation still has documented limits, including complete discriminator inheritance and XML name inference. See [validation](/docs/en/human/validation/) for the checks that establish useful evidence.

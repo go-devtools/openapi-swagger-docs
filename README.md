@@ -1,6 +1,6 @@
 # openapi-golang documentation
 
-[简体中文](README.zh-cn.md)
+[简体中文](README.zh-cn.md) · [Live documentation](https://openapi-golang.github.io/docs/en/)
 
 The bilingual documentation site for [openapi](https://github.com/openapi-golang/openapi) and [gin-swagger](https://github.com/openapi-golang/gin-swagger). Human guides and dedicated AI references share explicit chapter identities, with language, audience and light/dark theme controls in the header.
 
@@ -19,11 +19,19 @@ pnpm test:browser
 pnpm preview
 ```
 
-`pnpm dev` starts the local development server. `pnpm build` emits a static `dist` directory and checks all local links, localized audience coverage, raw Markdown parity and source hashes. CI installs from `pnpm-lock.yaml` and retains the static output as an artifact; it does not publish a public website.
+`pnpm dev` starts the local development server. `pnpm build` emits a static `dist` directory and checks all local links, localized audience coverage, raw Markdown parity and source hashes. Development and preview use `/docs/`, matching the published project path.
+
+## GitHub Pages deployment
+
+[Read the documentation](https://openapi-golang.github.io/docs/en/) or open the [AI index](https://openapi-golang.github.io/docs/llms.txt).
+
+The repository builds and publishes through `.github/workflows/ci.yml`. Push to `main` or run the workflow manually: it installs the pinned pnpm dependencies, checks source and particle contracts, builds and verifies every local link, then runs Chromium browser checks. Only the successful build artifact is deployed to the `github-pages` environment. Pull requests run the same checks without deploying. Publication uses the automatic `GITHUB_TOKEN` and OIDC; no additional personal token is needed.
+
+In repository **Settings → Pages**, the source is **GitHub Actions**. `src/lib/urls.mjs` defines the public origin and `/docs` base shared by Astro, navigation and verification. Authored Markdown uses `/docs/` links too. After deployment, the workflow environment links to the live site. A failed build keeps the last published site available; rerun the workflow after fixing the failure.
 
 ## Content and machine-readable references
 
-Author matching chapters in `src/content/{en,zh-cn}/{human,ai}`. Every page renders complete HTML without JavaScript and exposes its raw Markdown. `/llms.txt`, `/llms-full.txt` and `/manifest.json` provide agent discovery, the complete dedicated AI corpus and pinned source versions. No AI service, API key or source-code upload is required.
+Author matching chapters in `src/content/{en,zh-cn}/{human,ai}`. Every page renders complete HTML without JavaScript and exposes its raw Markdown. `/docs/llms.txt`, `/docs/llms-full.txt` and `/docs/manifest.json` provide agent discovery, the complete dedicated AI corpus and pinned source versions. No AI service, API key or source-code upload is required.
 
 The source references identify actual fixed product commits. This site is an introduction and integration reference; linked product guides describe detailed capability limits. Gin is the implemented adapter. Fiber and Echo are future extension directions only.
 

@@ -27,9 +27,9 @@ GOWORK=off go run ./cmd/gin-swagger check --dir ./examples/basic --output ./inte
 
 ## 机器可读入口
 
-- [llms.txt](/llms.txt)：精简发现索引。
-- [llms-full.txt](/llms-full.txt)：显式区分中英文的完整 AI 文档正文。
-- [manifest.json](/manifest.json)：固定上游版本、文档身份和源文件 SHA-256 摘要。
+- [llms.txt](/docs/llms.txt)：精简发现索引。
+- [llms-full.txt](/docs/llms-full.txt)：显式区分中英文的完整 AI 文档正文。
+- [manifest.json](/docs/manifest.json)：固定上游版本、文档身份和源文件 SHA-256 摘要。
 
 ## 证据规则
 

@@ -1,3 +1,5 @@
+import { siteURL } from './urls.mjs';
+
 // Explicit routes preserve the selected chapter across language and audience changes.
 export type Language = 'en' | 'zh-cn';
 export type Audience = 'human' | 'ai';
@@ -11,5 +13,5 @@ export const labels = {
 
 // Keep links deterministic so crawlers and no-script readers see the same content.
 export function docURL(lang: Language, audience: Audience, chapter = 'overview') {
-  return `/${lang}/${audience}/${chapter}/`;
+  return siteURL(`/${lang}/${audience}/${chapter}/`);
 }
