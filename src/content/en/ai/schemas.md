@@ -4,7 +4,7 @@ description: "Preserve type identity, wire shape and explicit value presence."
 lang: "en"
 audience: "ai"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/5a53f75a62b8a39c46f1f53d79d456eb510c6734/docs/native-objects.md"
+source: "https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/native-objects.md"
 ---
 
 ## Inputs and outputs
@@ -56,3 +56,9 @@ Construct `Tag.Parent` with `spec.Set(parent)`, inspect `.Value`/`.Present`, and
 Keep named and positional encodings mutually exclusive at each nesting level. `prefixEncoding` is an object array and `itemEncoding` is one object. Header references use the explicit offline resource graph. Positional media needs `itemSchema` or structural array evidence from types, items/tuples, ordinary references and positive compositions. Unused definitions, property arrays and cycles alone do not prove the outer array shape. Add an explicit constraint when dynamic or arbitrary instance logic is otherwise unproven.
 
 Field, style, boolean, container and combination checks do not implement a multipart codec or certify complete contentType grammar and UI submission. Consult `openapi.spec.tag.*` and `openapi.spec.encoding.*` diagnostics and the pinned guide.
+
+## HTTP context decisions
+
+Resolve Parameter references before comparing exact `(in, name)` identities. Reject duplicates within either Path Item or Operation lists, then apply same-identity Operation overrides and retain other inherited parameters. The effective set cannot mix query and querystring and cannot contain multiple querystring parameters. Handle `openapi.spec.parameter.duplicate`, `.querystring`, and `.reference.cycle` as blocking diagnostics. Do not add business DTO tags or rewrite routes to fix document construction.
+
+Keep required empty native Parameter names when serializing. Server templates and string defaults/enums are checked offline; application substitution remains a separate runtime concern. Resolve Link `operationId` case-sensitively to one physical Operation across the explicitly supplied OpenAPI resources; use `operationRef` when multi-document names clash. Preserve literal Link data, including false and null. Path Item reference field conflicts use the nearest explicit field for this check; runtime URL disambiguation is not certified.

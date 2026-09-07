@@ -4,7 +4,7 @@ description: "Preserve actual Go identities while describing the bytes your appl
 lang: "en"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/5a53f75a62b8a39c46f1f53d79d456eb510c6734/docs/standalone-schema.md"
+source: "https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/standalone-schema.md"
 ---
 
 ## Project a source type
@@ -39,7 +39,7 @@ Read `.Value` for the value and `.Present` to distinguish absence. A zero-valued
 
 `Example.DataValue` represents logical data, while `SerializedValue` contains the actual wire representation. `externalValue` requires explicitly supplied offline example resources. XML metadata describes a contract; it does not select a serializer or prove how business code emits XML.
 
-Read the source reference for resource-aware `$defs`, embedded dependencies and bounded standalone output. [Native object details](https://github.com/openapi-golang/openapi/blob/5a53f75a62b8a39c46f1f53d79d456eb510c6734/docs/native-objects.md) describe migration and current limits.
+Read the source reference for resource-aware `$defs`, embedded dependencies and bounded standalone output. [Native object details](https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/native-objects.md) describe migration and current limits.
 
 ## Polymorphic branches
 
@@ -66,3 +66,9 @@ Use `spec.Tag{ Name: "items", Parent: spec.Set("resources") }` for an explicit p
 For multipart, named `encoding` cannot coexist with positional `prefixEncoding` or `itemEncoding` at the same level. This also applies to nested encodings. Positional media requires `itemSchema` or array evidence in `schema`: an array type, items/tuple structure, ordinary references, or positive composition branches. Local and explicitly supplied offline references retain their base URI and anchors. Missing nested Header resources produce located diagnostics.
 
 These checks validate document structure, including style values and explicit booleans. They do not certify multipart wire serializers, complete contentType grammar, native positional UI submission, or arbitrary dynamic array-shape proofs. See the pinned native object guide for the precise boundaries.
+
+## HTTP objects and inherited parameters
+
+Native parameter checks resolve references before comparing names and locations. Operations can override the same inherited parameter, but cannot remove other Path Item parameters. A resulting parameter set may contain only one querystring parameter and cannot combine it with query parameters. External Path Items and aliases use explicitly supplied offline resources. Empty native query names remain present in `spec.Parameter.Name` serialization.
+
+Servers validate URL-template syntax, variable defaults and enum membership without contacting hosts. Links require a unique resolvable operation ID across the supplied description; literal parameter values remain ordinary data. These checks do not certify runtime URL selection, every serializer or arbitrary Schema satisfiability. See the pinned native object guide for diagnostics and boundaries.

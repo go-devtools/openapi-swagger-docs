@@ -4,7 +4,7 @@ description: "保留真实 Go 类型身份，描述应用实际收发的数据�
 lang: "zh-cn"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/5a53f75a62b8a39c46f1f53d79d456eb510c6734/docs/standalone-schema.md"
+source: "https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/standalone-schema.md"
 ---
 
 ## 导出源码类型
@@ -39,7 +39,7 @@ body := spec.RequestBody{Required: spec.Set(true)}
 
 `Example.DataValue` 表示逻辑数据，`SerializedValue` 表示线上序列化结果。`externalValue` 必须使用显式提供的离线示例资源。XML 元数据只描述契约，不会选择序列化器，也不能证明业务代码实际如何输出 XML。
 
-源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/openapi-golang/openapi/blob/5a53f75a62b8a39c46f1f53d79d456eb510c6734/docs/native-objects.md)说明了迁移方式和当前限制。
+源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/native-objects.md)说明了迁移方式和当前限制。
 
 ## 多态分支
 
@@ -66,3 +66,9 @@ XML content 中的内联 element 或 attribute Schema，如果无法从组件或
 multipart 的具名 `encoding` 不能与同层的位置编码 `prefixEncoding`、`itemEncoding` 共存，嵌套编码同样遵守此规则。位置编码媒体需要 `itemSchema`，或由 `schema` 提供数组结构证据：数组类型、数组项与元组结构、普通引用或正向组合分支。本地及显式提供的离线引用保留基准 URI 和锚点，嵌套 Header 缺少资源时会报告具体位置。
 
 这些检查验证文档结构，包括 style 取值与显式布尔值，不代表已经认证 multipart 线上序列化、完整 contentType 语法、原生位置编码 UI 提交，或任意动态数组形状证明。精确边界见固定版本的原生对象指南。
+
+## HTTP 对象与参数继承
+
+原生参数检查先解析引用，再比较名称和位置。操作可覆盖同名同位置的继承参数，但不能移除其他 Path Item 参数。最终参数集合最多包含一个 Querystring 参数，且不能与 Query 参数共存。外部 Path Item 和别名通过显式提供的离线资源解析。`spec.Parameter.Name` 序列化保留原生查询参数的空名称。
+
+Server 检查 URL 模板、变量默认值及枚举成员关系，不访问声明的主机。Link 的操作标识必须在显式提供的描述中唯一且可解析；参数字面值仍作为普通数据保留。这些检查不证明运行时 URL 选择、所有序列化器或任意 Schema 可满足性，具体诊断与边界见固定版本的原生对象指南。

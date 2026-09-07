@@ -4,7 +4,7 @@ description: "保留类型身份、线上结构和显式值存在性。"
 lang: "zh-cn"
 audience: "ai"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/5a53f75a62b8a39c46f1f53d79d456eb510c6734/docs/native-objects.md"
+source: "https://github.com/openapi-golang/openapi/blob/c9afc2b2a8db6a881fce7f56fbd988e4b198fe44/docs/native-objects.md"
 ---
 
 ## 输入与输出
@@ -56,3 +56,9 @@ Discriminator 提示不会改变 JSON Schema 实例验证结果。`oneOf` 分支
 每层具名编码与位置编码均互斥；`prefixEncoding` 是对象数组，`itemEncoding` 是单个对象。Header 引用使用显式离线资源图。位置编码媒体需要 `itemSchema`，或从类型、数组项/元组、普通引用和正向组合得到数组结构证据。未使用定义、属性中的数组以及单纯循环均不证明外层数组形状。动态或任意实例逻辑无法证明时应提供明确约束。
 
 字段、style、布尔值、容器及组合校验不等于实现 multipart 编解码器，也不认证完整 contentType 语法和 UI 提交。检查 `openapi.spec.tag.*`、`openapi.spec.encoding.*` 诊断及固定版本指南。
+
+## HTTP 上下文决策
+
+解析 Parameter 引用后，再比较精确的 `(in, name)` 身份。Path Item 与 Operation 各自的列表内部禁止重复；应用操作级同身份覆盖后，保留其余继承参数。最终集合不能混用 Query 与 Querystring，也不能含多个 Querystring。将 `openapi.spec.parameter.duplicate`、`.querystring` 和 `.reference.cycle` 视为阻塞诊断，不通过给业务 DTO 加 tag 或改写路由来修正文档构造。
+
+序列化保留原生 Parameter 必填的空名称。Server 模板、字符串默认值及枚举在离线环境下检查，应用替换仍属于运行时行为。Link `operationId` 区分大小写，必须在显式提供的 OpenAPI 资源中对应唯一物理 Operation；跨文档重名时改用 `operationRef`。保留包括 false、null 在内的 Link 字面值。Path Item 引用字段冲突在本项检查中使用最近的显式字段；运行时 URL 消歧不在本项验证范围内。
