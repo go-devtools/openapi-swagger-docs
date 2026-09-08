@@ -4,7 +4,7 @@ description: "区分文档有效性、源码新鲜度和实际样本提供的证
 lang: "zh-cn"
 audience: "human"
 chapter: "validation"
-source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/contracttest.md"
+source: "https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/contracttest.md"
 ---
 
 ## 三种不同的检查
@@ -64,7 +64,7 @@ gin-swagger check --spec ./openapi.json --max-bytes=8388608 --timeout=30s
 
 流式 `itemSchema` 面板独立于完整消息 Schema。真实分阶段 NDJSON／SSE 检查证明服务器响应未结束时客户端已收到首批字节，但固定 UI 仅在响应完成后显示输出。需要逐条观察长连接事件时，请使用流式客户端。有限消息的分帧检查不能证明 UI 支持增量渲染。
 
-QUERY 和所有请求执行都需要显式开启。省略的扩展方法与标签元数据会产生兼容性提示。兼容性报告为空仅表示未发现已列举的限制，不证明任意序列化器可用。具体范围见[实际验证的 UI 边界](https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/swaggerui-compatibility.md)。
+QUERY 和所有请求执行都需要显式开启。省略的扩展方法与标签元数据会产生兼容性提示。兼容性报告为空仅表示未发现已列举的限制，不证明任意序列化器可用。具体范围见[实际验证的 UI 边界](https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/swaggerui-compatibility.md)。
 
 ## 查看器中的授权
 

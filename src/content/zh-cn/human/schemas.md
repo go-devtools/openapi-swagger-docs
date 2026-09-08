@@ -4,7 +4,7 @@ description: "保留真实 Go 类型身份，描述应用实际收发的数据�
 lang: "zh-cn"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/standalone-schema.md"
+source: "https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/standalone-schema.md"
 ---
 
 ## 导出源码类型
@@ -58,13 +58,13 @@ operation := spec.Operation{Deprecated: spec.Set(false)}
 body := spec.RequestBody{Required: spec.Set(true)}
 ```
 
-通过 `.Value` 读取值，通过 `.Present` 区分缺省。零值可选字段不会输出。使用 `spec.Set[any](nil)` 声明值明确为 null 的逻辑示例。上述代码使用公开包 `github.com/openapi-golang/openapi/spec`。
+通过 `.Value` 读取值，通过 `.Present` 区分缺省。零值可选字段不会输出。使用 `spec.Set[any](nil)` 声明值明确为 null 的逻辑示例。上述代码使用公开包 `github.com/go-devtools/openapi/spec`。
 
 ## 原生 Example 与 XML
 
 `Example.DataValue` 表示逻辑数据，`SerializedValue` 表示线上序列化结果。`externalValue` 必须使用显式提供的离线示例资源。XML 元数据只描述契约，不会选择序列化器，也不能证明业务代码实际如何输出 XML。
 
-源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/native-objects.md)说明了迁移方式和当前限制。
+源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/native-objects.md)说明了迁移方式和当前限制。
 
 ## 多态分支
 

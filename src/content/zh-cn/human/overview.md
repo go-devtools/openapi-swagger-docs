@@ -4,7 +4,7 @@ description: "从 Go 源码生成契约，将框架行为留在适配器中。"
 lang: "zh-cn"
 audience: "human"
 chapter: "overview"
-source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/adapter-sdk.md"
+source: "https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/adapter-sdk.md"
 ---
 
 ## 各部分如何配合
@@ -23,7 +23,7 @@ GOWORK=off go run ./cmd/gin-swagger generate --dir ./examples/basic --output ./i
 GOWORK=off go run ./cmd/gin-swagger check --dir ./examples/basic --output ./internal/apidoc
 ```
 
-继续阅读 [Gin 指南](/docs/zh-cn/human/gin/)，运行示例并查看文档。
+继续阅读 [Gin 指南](/openapi-swagger-docs/zh-cn/human/gin/)，运行示例并查看文档。
 
 ## 选择公开包
 
@@ -39,4 +39,4 @@ GOWORK=off go run ./cmd/gin-swagger check --dir ./examples/basic --output ./inte
 
 自动推导、显式声明、集中适配和未解决行为是不同结果。声明约束是在描述契约，不能证明服务端已经执行了该约束。未知效果和有歧义的 handler 身份会产生诊断，而不是猜测响应。
 
-SDK 仍处于 1.0 之前。请固定模块和 CLI 版本，并查看[版本清单](/docs/manifest.json)。原生对象验证仍有明确限制，包括完整的 discriminator 继承关系和 XML 名称推断。[验证指南](/docs/zh-cn/human/validation/)说明了各类检查分别能证明什么。
+SDK 仍处于 1.0 之前。请固定模块和 CLI 版本，并查看[版本清单](/openapi-swagger-docs/manifest.json)。原生对象验证仍有明确限制，包括完整的 discriminator 继承关系和 XML 名称推断。[验证指南](/openapi-swagger-docs/zh-cn/human/validation/)说明了各类检查分别能证明什么。

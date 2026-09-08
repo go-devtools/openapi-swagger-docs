@@ -6,5 +6,5 @@ export function GET() {
     const m = doc.frontmatter;
     return `- [${m.title} (${m.lang})](${siteURL(`/raw/${m.lang}/ai/${m.chapter}.md`)}): ${m.description}`;
   });
-  return new Response(`# openapi-golang\n\n> Go source contracts, native OpenAPI 3.2, and the Gin adapter. Pre-1.0 APIs: use pinned source references.\n\n## Agent documentation\n\n${entries.join('\n')}\n\n## Resources\n\n- [Complete AI corpus](${siteURL('/llms-full.txt')})\n- [Version and content manifest](${siteURL('/manifest.json')})\n`, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+  return new Response(`# go-devtools\n\n> Go source contracts, native OpenAPI 3.2, and the Gin adapter. Pre-1.0 APIs: use pinned source references.\n\n## Agent documentation\n\n${entries.join('\n')}\n\n## Resources\n\n- [Complete AI corpus](${siteURL('/llms-full.txt')})\n- [Version and content manifest](${siteURL('/manifest.json')})\n`, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 }

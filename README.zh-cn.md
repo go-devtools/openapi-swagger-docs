@@ -1,8 +1,8 @@
-# openapi-golang 文档站
+# go-devtools 文档站
 
-[English](README.md) · [在线文档](https://openapi-golang.github.io/docs/zh-cn/)
+[English](README.md) · [在线文档](https://go-devtools.github.io/openapi-swagger-docs/zh-cn/)
 
-面向 [openapi](https://github.com/openapi-golang/openapi) 与 [gin-swagger](https://github.com/openapi-golang/gin-swagger) 的双语文档站。人类指南和 AI 专用参考使用对应章节，顶部提供语言和读者类型切换，全部页面统一使用暗色。AI 页面仅保留紧凑契约和醒目的原始 Markdown 入口，不包含装饰动画。
+面向 [openapi](https://github.com/go-devtools/openapi) 与 [gin-swagger](https://github.com/go-devtools/gin-swagger) 的双语文档站。人类指南和 AI 专用参考使用对应章节，顶部提供语言和读者类型切换，全部页面统一使用暗色。AI 页面仅保留紧凑契约和醒目的原始 Markdown 入口，不包含装饰动画。
 
 ## 开发
 
@@ -19,19 +19,19 @@ pnpm test:browser
 pnpm preview
 ```
 
-`pnpm dev` 启动本地开发服务。`pnpm build` 生成静态 `dist` 目录，并检查全部本地链接、语言与读者覆盖、原始 Markdown 一致性和源码摘要。开发与预览使用 `/docs/`，与发布后的项目路径一致。
+`pnpm dev` 启动本地开发服务。`pnpm build` 生成静态 `dist` 目录，并检查全部本地链接、语言与读者覆盖、原始 Markdown 一致性和源码摘要。开发与预览使用 `/openapi-swagger-docs/`，与发布后的项目路径一致。
 
 ## GitHub Pages 发布
 
-打开[在线文档](https://openapi-golang.github.io/docs/zh-cn/)或 [AI 索引](https://openapi-golang.github.io/docs/llms.txt)。
+打开[在线文档](https://go-devtools.github.io/openapi-swagger-docs/zh-cn/)或 [AI 索引](https://go-devtools.github.io/openapi-swagger-docs/llms.txt)。
 
 仓库通过 `.github/workflows/ci.yml` 构建并发布。推送到 `main` 或手动运行工作流后，会安装固定的 pnpm 依赖、检查源码和粒子约束、构建并校验所有本地链接，然后执行 Chromium 浏览器验证。只有全部通过的构建产物才会部署到 `github-pages` 环境。Pull request 执行相同检查，但不发布。发布使用自动提供的 `GITHUB_TOKEN` 与 OIDC，无需新增个人令牌。
 
-仓库 **Settings → Pages** 的发布源为 **GitHub Actions**。`src/lib/urls.mjs` 定义公共域名及 `/docs` 基础路径，由 Astro、导航和验证共享；Markdown 中的站内链接也使用 `/docs/` 前缀。部署后可从工作流环境链接打开站点。构建失败时，上一版已发布站点仍然可用；修复后重新运行工作流即可。
+仓库 **Settings → Pages** 的发布源为 **GitHub Actions**。`src/lib/urls.mjs` 定义公共域名及 `/openapi-swagger-docs` 基础路径，由 Astro、导航和验证共享；Markdown 中的站内链接也使用 `/openapi-swagger-docs/` 前缀。部署后可从工作流环境链接打开站点。构建失败时，上一版已发布站点仍然可用；修复后重新运行工作流即可。
 
 ## 文档与机器可读参考
 
-在 `src/content/{en,zh-cn}/{human,ai}` 编写对应章节。每页都提供无需 JavaScript 的完整 HTML 和原始 Markdown。`/docs/llms.txt`、`/docs/llms-full.txt` 与 `/docs/manifest.json` 分别提供代理发现索引、完整 AI 专用正文和固定源码版本。无需 AI 服务、API key 或上传业务源码。
+在 `src/content/{en,zh-cn}/{human,ai}` 编写对应章节。每页都提供无需 JavaScript 的完整 HTML 和原始 Markdown。`/openapi-swagger-docs/llms.txt`、`/openapi-swagger-docs/llms-full.txt` 与 `/openapi-swagger-docs/manifest.json` 分别提供代理发现索引、完整 AI 专用正文和固定源码版本。无需 AI 服务、API key 或上传业务源码。
 
 源码参考对应真实固定产品提交。本站提供概览和接入参考，具体能力边界见链接的产品指南。Gin 是当前适配器，Fiber 与 Echo 仅为未来扩展方向。
 

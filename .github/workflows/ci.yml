@@ -70,7 +70,7 @@ jobs:
       - name: Verify the configured public URL
         env:
           PAGES_URL: ${{ steps.pages.outputs.base_url }}
-        run: test "$PAGES_URL" = 'https://openapi-golang.github.io/docs'
+        run: test "$PAGES_URL" = 'https://go-devtools.github.io/openapi-swagger-docs'
       - name: Publish verified documentation
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

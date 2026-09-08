@@ -4,7 +4,7 @@ description: "Preserve type identity, wire shape and explicit value presence."
 lang: "en"
 audience: "ai"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/native-objects.md"
+source: "https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/native-objects.md"
 ---
 
 ## Projection
@@ -28,7 +28,7 @@ source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771eb
 operation := spec.Operation{Deprecated: spec.Set(false)}
 ```
 
-Import `github.com/openapi-golang/openapi/spec`. Read `.Value` and `.Present`. Absence differs from false; `spec.Set[any](nil)` is explicit null. Enum descriptions must align with values. Comments do not prove runtime enforcement.
+Import `github.com/go-devtools/openapi/spec`. Read `.Value` and `.Present`. Absence differs from false; `spec.Set[any](nil)` is explicit null. Enum descriptions must align with values. Comments do not prove runtime enforcement.
 
 ## Native checks
 

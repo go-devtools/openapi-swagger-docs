@@ -1,5 +1,5 @@
 {
-  "name": "@openapi-golang/docs",
+  "name": "@go-devtools/openapi-swagger-docs",
   "version": "0.1.0",
   "private": true,
   "type": "module",

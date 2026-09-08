@@ -4,7 +4,7 @@ description: "Compile Go source into contracts. Keep framework behavior in adapt
 lang: "en"
 audience: "human"
 chapter: "overview"
-source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/adapter-sdk.md"
+source: "https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/adapter-sdk.md"
 ---
 
 ## How it fits together
@@ -23,7 +23,7 @@ GOWORK=off go run ./cmd/gin-swagger generate --dir ./examples/basic --output ./i
 GOWORK=off go run ./cmd/gin-swagger check --dir ./examples/basic --output ./internal/apidoc
 ```
 
-Continue with the [Gin guide](/docs/en/human/gin/) to run the application and inspect its documentation.
+Continue with the [Gin guide](/openapi-swagger-docs/en/human/gin/) to run the application and inspect its documentation.
 
 ## Choose the right package
 
@@ -39,4 +39,4 @@ Continue with the [Gin guide](/docs/en/human/gin/) to run the application and in
 
 Automatic derivation, explicit declaration, centralized adaptation and unresolved behavior are different outcomes. A declared constraint describes a contract; it does not prove the server enforces it. Unknown effects and ambiguous handler identities produce diagnostics instead of guessed responses.
 
-The SDK is pre-1.0. Pin both modules and the CLI, and read [the version manifest](/docs/manifest.json) before adopting an API. Native object validation still has documented limits, including complete discriminator inheritance and XML name inference. See [validation](/docs/en/human/validation/) for the checks that establish useful evidence.
+The SDK is pre-1.0. Pin both modules and the CLI, and read [the version manifest](/openapi-swagger-docs/manifest.json) before adopting an API. Native object validation still has documented limits, including complete discriminator inheritance and XML name inference. See [validation](/openapi-swagger-docs/en/human/validation/) for the checks that establish useful evidence.

@@ -4,7 +4,7 @@ description: "Generate from real handlers and mount documentation once at startu
 lang: "en"
 audience: "human"
 chapter: "gin"
-source: "https://github.com/openapi-golang/gin-swagger/blob/4d50b1f71e3097a3129968350c7f41cf476f8fda/docs/ai-integration.md"
+source: "https://github.com/go-devtools/gin-swagger/blob/659f752b8890a0293ffeddcf6d02ac41e9646d30/docs/ai-integration.md"
 ---
 
 ## Run the complete example
@@ -18,7 +18,7 @@ GOWORK=off go run ./cmd/gin-swagger check --dir ./examples/basic --output ./inte
 GOWORK=off go run ./examples/basic
 ```
 
-Open `http://127.0.0.1:8080/docs/`. For an application, install the CLI at the same fixed adapter version as its `go.mod`; the [manifest](/docs/manifest.json) records this documentation's source versions. Private repository access must already be available to Go.
+Open `http://127.0.0.1:8080/docs/`. For an application, install the CLI at the same fixed adapter version as its `go.mod`; the [manifest](/openapi-swagger-docs/manifest.json) records this documentation's source versions. Private repository access must already be available to Go.
 
 ## Keep startup integration small
 
@@ -36,7 +36,7 @@ Authorize uses Bearer only. Enter the intentionally public demo value `demo-toke
 
 `Config.Groups` creates complete documents in the top-right definition selector. Every group's `Include(method, path)` intersects `Config.Include`. `Config.DefaultGroup` chooses the initial document. Tags group operations within a document; they are different from the definition selector.
 
-The example disables `UI.Filter`. Shared UI displays readable model titles, compact examples and enum meanings. Existing Gin binding, response, SSE and stream behavior is described in the [request guide](https://github.com/openapi-golang/gin-swagger/blob/4d50b1f71e3097a3129968350c7f41cf476f8fda/docs/requests.md) and [response guide](https://github.com/openapi-golang/gin-swagger/blob/4d50b1f71e3097a3129968350c7f41cf476f8fda/docs/responses.md).
+The example disables `UI.Filter`. Shared UI displays readable model titles, compact examples and enum meanings. Existing Gin binding, response, SSE and stream behavior is described in the [request guide](https://github.com/go-devtools/gin-swagger/blob/659f752b8890a0293ffeddcf6d02ac41e9646d30/docs/requests.md) and [response guide](https://github.com/go-devtools/gin-swagger/blob/659f752b8890a0293ffeddcf6d02ac41e9646d30/docs/responses.md).
 
 ## Derive body presence from accepted paths
 

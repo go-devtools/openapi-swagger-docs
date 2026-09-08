@@ -4,7 +4,7 @@ description: "Use structured results to distinguish stale output, invalid docume
 lang: "en"
 audience: "ai"
 chapter: "validation"
-source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/references.md"
+source: "https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/references.md"
 ---
 
 ## Procedure

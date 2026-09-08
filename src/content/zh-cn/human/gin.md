@@ -4,7 +4,7 @@ description: "从真实 handler 生成契约，在启动时挂载一次文档。
 lang: "zh-cn"
 audience: "human"
 chapter: "gin"
-source: "https://github.com/openapi-golang/gin-swagger/blob/4d50b1f71e3097a3129968350c7f41cf476f8fda/docs/ai-integration.md"
+source: "https://github.com/go-devtools/gin-swagger/blob/659f752b8890a0293ffeddcf6d02ac41e9646d30/docs/ai-integration.md"
 ---
 
 ## 运行完整示例
@@ -18,7 +18,7 @@ GOWORK=off go run ./cmd/gin-swagger check --dir ./examples/basic --output ./inte
 GOWORK=off go run ./examples/basic
 ```
 
-打开 `http://127.0.0.1:8080/docs/`。用于业务项目时，CLI 应安装为与 `go.mod` 相同的固定适配器版本。[版本清单](/docs/manifest.json)记录本套文档参考的源码版本。Go 需要已经具备私有仓库访问权限。
+打开 `http://127.0.0.1:8080/docs/`。用于业务项目时，CLI 应安装为与 `go.mod` 相同的固定适配器版本。[版本清单](/openapi-swagger-docs/manifest.json)记录本套文档参考的源码版本。Go 需要已经具备私有仓库访问权限。
 
 ## 保持启动接入简洁
 
@@ -36,7 +36,7 @@ Authorize 只使用 Bearer。为示例授权路由输入公开演示值 `demo-to
 
 `Config.Groups` 定义右上角选择器中的完整文档，每组的 `Include(method, path)` 与 `Config.Include` 取交集。`Config.DefaultGroup` 选择初始文档。Tags 用于一个文档内部的操作分组，与整体文档选择器不同。
 
-示例关闭 `UI.Filter`。共享 UI 展示可读模型标题、紧凑示例和枚举含义。Gin 请求绑定、响应、SSE 和流式行为分别见[请求指南](https://github.com/openapi-golang/gin-swagger/blob/4d50b1f71e3097a3129968350c7f41cf476f8fda/docs/requests.md)和[响应指南](https://github.com/openapi-golang/gin-swagger/blob/4d50b1f71e3097a3129968350c7f41cf476f8fda/docs/responses.md)。
+示例关闭 `UI.Filter`。共享 UI 展示可读模型标题、紧凑示例和枚举含义。Gin 请求绑定、响应、SSE 和流式行为分别见[请求指南](https://github.com/go-devtools/gin-swagger/blob/659f752b8890a0293ffeddcf6d02ac41e9646d30/docs/requests.md)和[响应指南](https://github.com/go-devtools/gin-swagger/blob/659f752b8890a0293ffeddcf6d02ac41e9646d30/docs/responses.md)。
 
 ## 从成功路径推导请求体存在性
 

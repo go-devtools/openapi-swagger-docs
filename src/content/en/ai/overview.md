@@ -4,13 +4,13 @@ description: "A focused reference for coding agents and automation."
 lang: "en"
 audience: "ai"
 chapter: "overview"
-source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/ai-integration.md"
+source: "https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/ai-integration.md"
 ---
 
 ## Contract
 
 - Go 1.27.1; Gin 1.12.0; native OpenAPI 3.2.
-- Read fixed module versions from [manifest.json](/docs/manifest.json). Install the CLI at the application's adapter version.
+- Read fixed module versions from [manifest.json](/openapi-swagger-docs/manifest.json). Install the CLI at the application's adapter version.
 - Core owns types, comments, neutral contracts and validation. Adapters own framework behavior.
 - Preserve DTOs, handler signatures/bodies and route registration. Use public SDK packages only.
 
@@ -32,6 +32,6 @@ Download dependencies first. Mount the generated Bundle on the actual router bef
 
 ## Resources
 
-- [Index](/docs/llms.txt)
-- [Full AI corpus](/docs/llms-full.txt)
-- [Versions and content hashes](/docs/manifest.json)
+- [Index](/openapi-swagger-docs/llms.txt)
+- [Full AI corpus](/openapi-swagger-docs/llms-full.txt)
+- [Versions and content hashes](/openapi-swagger-docs/manifest.json)

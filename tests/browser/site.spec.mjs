@@ -63,7 +63,7 @@ test('stars animate, react to movement, pause and respect reduced motion', async
   expect(await pixels(page)).toBe(paused);
   await capture(page, 'home-dark', info);
   await page.getByRole('button', { name: 'Animate stars', exact: true }).click();
-  await page.getByRole('button', { name: /Interactive openapi-golang star cluster/ }).press('ArrowRight');
+  await page.getByRole('button', { name: /Interactive go-devtools star cluster/ }).press('ArrowRight');
   await expect.poll(() => pixels(page)).not.toBe(paused);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(page.getByRole('button', { name: 'Animate stars', exact: true })).toBeDisabled();
@@ -211,7 +211,7 @@ test('Pages entry, assets and all manifest routes remain inside the published si
   page.on('response', response => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
   await page.goto(siteURL());
   await expect(page).toHaveURL(new URL(siteURL('/en/'), baseURL).href);
-  await expect(page).toHaveTitle('OpenAPI, from your Go code. · openapi-golang');
+  await expect(page).toHaveTitle('OpenAPI, from your Go code. · go-devtools');
   await expect(page.locator('canvas')).toHaveAttribute('data-rendered', 'true');
   await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', siteURL('/favicon.svg'));
   await page.getByRole('link', { name: 'Language', exact: true }).click();
@@ -219,7 +219,7 @@ test('Pages entry, assets and all manifest routes remain inside the published si
   const manifest = await (await page.request.get(siteURL('/manifest.json'))).json();
   for (const document of manifest.documents) {
     for (const path of [document.url, document.markdown]) {
-      expect(path).toMatch(/^\/docs\//);
+      expect(path.startsWith(siteURL('/'))).toBe(true);
       const response = await page.request.get(path);
       expect(response.status(), path).toBe(200);
       expect(await response.text()).toContain(document.title);
@@ -230,7 +230,7 @@ test('Pages entry, assets and all manifest routes remain inside the published si
     expect(response.status()).toBe(200);
     const text = await response.text();
     for (const [, path] of text.matchAll(/\]\((\/[^)]+)\)/g)) {
-      expect(path).toMatch(/^\/docs\//);
+      expect(path.startsWith(siteURL('/'))).toBe(true);
       expect((await page.request.get(path)).status(), path).toBe(200);
     }
   }

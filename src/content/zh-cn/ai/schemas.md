@@ -4,7 +4,7 @@ description: "保留类型身份、线上结构和显式值存在性。"
 lang: "zh-cn"
 audience: "ai"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/native-objects.md"
+source: "https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/native-objects.md"
 ---
 
 ## 投影
@@ -28,7 +28,7 @@ source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771eb
 operation := spec.Operation{Deprecated: spec.Set(false)}
 ```
 
-导入 `github.com/openapi-golang/openapi/spec`；读取 `.Value` 与 `.Present`。缺省不同于 false；`spec.Set[any](nil)` 表示显式 null。枚举说明与值对齐；注释不证明运行时约束。
+导入 `github.com/go-devtools/openapi/spec`；读取 `.Value` 与 `.Present`。缺省不同于 false；`spec.Set[any](nil)` 表示显式 null。枚举说明与值对齐；注释不证明运行时约束。
 
 ## 原生校验
 
