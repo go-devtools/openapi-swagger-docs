@@ -4,7 +4,7 @@ description: "Use public compilation views and neutral effects to describe frame
 lang: "en"
 audience: "human"
 chapter: "extensions"
-source: "https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/adapter-sdk.md"
+source: "https://github.com/go-devtools/openapi/blob/8daf8d2e4d56822ea2969fcd12cdea395bd73c89/docs/adapter-sdk.md"
 ---
 
 ## Ownership stays explicit

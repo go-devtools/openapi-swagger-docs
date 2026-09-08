@@ -4,7 +4,7 @@ description: "通过结构化结果区分过期输出、无效文档和未知效
 lang: "zh-cn"
 audience: "ai"
 chapter: "validation"
-source: "https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/references.md"
+source: "https://github.com/go-devtools/openapi/blob/8daf8d2e4d56822ea2969fcd12cdea395bd73c89/docs/references.md"
 ---
 
 ## 流程

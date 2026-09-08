@@ -4,7 +4,7 @@ description: "保留真实 Go 类型身份，描述应用实际收发的数据�
 lang: "zh-cn"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/standalone-schema.md"
+source: "https://github.com/go-devtools/openapi/blob/8daf8d2e4d56822ea2969fcd12cdea395bd73c89/docs/standalone-schema.md"
 ---
 
 ## 导出源码类型
@@ -64,7 +64,7 @@ body := spec.RequestBody{Required: spec.Set(true)}
 
 `Example.DataValue` 表示逻辑数据，`SerializedValue` 表示线上序列化结果。`externalValue` 必须使用显式提供的离线示例资源。XML 元数据只描述契约，不会选择序列化器，也不能证明业务代码实际如何输出 XML。
 
-源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/native-objects.md)说明了迁移方式和当前限制。
+源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/go-devtools/openapi/blob/8daf8d2e4d56822ea2969fcd12cdea395bd73c89/docs/native-objects.md)说明了迁移方式和当前限制。
 
 ## 多态分支
 

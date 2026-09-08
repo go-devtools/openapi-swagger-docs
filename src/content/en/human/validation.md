@@ -4,7 +4,7 @@ description: "Separate document validity, source freshness and evidence from rea
 lang: "en"
 audience: "human"
 chapter: "validation"
-source: "https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/contracttest.md"
+source: "https://github.com/go-devtools/openapi/blob/8daf8d2e4d56822ea2969fcd12cdea395bd73c89/docs/contracttest.md"
 ---
 
 ## Three distinct checks
@@ -64,7 +64,7 @@ Document validity does not establish a working client for every feature. The sha
 
 Stream `itemSchema` has a separate panel from whole-body Schema. Real gated NDJSON/SSE checks receive the first bytes while the server response is still open, but the pinned UI displays output only after completion. Use a streaming client to inspect long-lived events as they arrive. Finite framing checks do not establish incremental rendering.
 
-QUERY and all request execution require explicit enablement. Omitted extension methods and tag metadata produce compatibility notes. An empty compatibility report only means no listed limitation was found; it does not certify arbitrary serializers. Read the [verified UI boundaries](https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/swaggerui-compatibility.md) for the tested scope.
+QUERY and all request execution require explicit enablement. Omitted extension methods and tag metadata produce compatibility notes. An empty compatibility report only means no listed limitation was found; it does not certify arbitrary serializers. Read the [verified UI boundaries](https://github.com/go-devtools/openapi/blob/8daf8d2e4d56822ea2969fcd12cdea395bd73c89/docs/swaggerui-compatibility.md) for the tested scope.
 
 ## Authorization in the viewer
 

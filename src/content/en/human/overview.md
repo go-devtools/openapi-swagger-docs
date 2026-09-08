@@ -4,8 +4,23 @@ description: "Compile Go source into contracts. Keep framework behavior in adapt
 lang: "en"
 audience: "human"
 chapter: "overview"
-source: "https://github.com/go-devtools/openapi/blob/fb93d0a624f7945a0509243c5ed99fea1fbf34ea/docs/adapter-sdk.md"
+source: "https://github.com/go-devtools/openapi/blob/8daf8d2e4d56822ea2969fcd12cdea395bd73c89/docs/adapter-sdk.md"
 ---
+
+## Install the first release
+
+Both public Go modules start at **v0.0.1**. In your own application's module:
+
+```sh
+go get github.com/go-devtools/openapi@v0.0.1
+go get github.com/go-devtools/gin-swagger@v0.0.1
+go install github.com/go-devtools/gin-swagger/cmd/gin-swagger@v0.0.1
+gin-swagger version
+```
+
+No private token or local `replace` is needed. The adapter pins `openapi v0.0.1`. Prebuilt CLIs, source and checksums are published in [openapi releases](https://github.com/go-devtools/openapi/releases/tag/v0.0.1) and [gin-swagger releases](https://github.com/go-devtools/gin-swagger/releases/tag/v0.0.1).
+
+Stable main, next-version develop, `release/0.0` maintenance and `hotfix/0.0.2` corrections are separate. See the [release workflow](https://github.com/go-devtools/gin-swagger/blob/main/CONTRIBUTING.md) before preparing a version. Versions are immutable; pin the CLI to the adapter version used by the application.
 
 ## How it fits together
 
