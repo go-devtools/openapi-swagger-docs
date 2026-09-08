@@ -4,7 +4,7 @@ description: "Generate, inspect, mount and verify without changing business beha
 lang: "en"
 audience: "ai"
 chapter: "gin"
-source: "https://github.com/openapi-golang/gin-swagger/blob/5d3bef72339ffccbb0cbf366c513d5dd3f163502/docs/ai-integration.md"
+source: "https://github.com/openapi-golang/gin-swagger/blob/60545e2ee3b400bf9225ca7e42f89660370867a2/docs/ai-integration.md"
 ---
 
 ## Integration
@@ -21,6 +21,13 @@ source: "https://github.com/openapi-golang/gin-swagger/blob/5d3bef72339ffccbb0cb
 - For builds after initialization with static escaped colons, capture complete `Engine.Routes()` into `Config.RegisteredRoutes` before Run/ServeHTTP. A stale snapshot is an error.
 - Encoding follows actual Engine flags. `UseEscapedPath` overrides `UseRawPath`; raw fallback can depend on parameter escapes. Inspect `x-gin-raw-path-note`.
 - Ambiguous handlers require evidence and centralized `Bindings` keyed by original METHOD/path. Never infer closure state from code addresses.
+
+## Input and file boundaries
+
+- Checked JSON rejection followed by return can establish body required. Ignored errors or accepted failure paths prevent it; mandatory binding keeps committed errors. Form property required is independent.
+- Keep automatic method/media conditions separate. Conflicting body presence diagnoses; inspect Explain `nonEmptyBody`. Custom stream replacement needs explicit rules.
+- Raw query values stay strings. Checked/ignored `Atoi`/`ParseInt` errors follow actual branches; ignored errors can return zero/saturation. UTF-8 byte length is not Schema character length.
+- File methods need complete centralized `CallOutcomes`: exact identities/assets/methods, media, ranges, preconditions, failures and declared provenance. The fixed text fixture verifies GET/HEAD and 404, not arbitrary files or all 403/500 causes.
 
 ## Diagnostics
 

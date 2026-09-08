@@ -4,7 +4,7 @@ description: "Preserve actual Go identities while describing the bytes your appl
 lang: "en"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8ab191b89a2065aa0/docs/standalone-schema.md"
+source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/standalone-schema.md"
 ---
 
 ## Project a source type
@@ -24,6 +24,31 @@ Types and the actual codec determine wire structure. Ordinary comments provide d
 
 Stable component identities distinguish packages, generic arguments, direction and media type. Swagger UI uses readable schema titles without exposing identity suffixes. Enum descriptions come from comments on typed constants; `x-enum-descriptions` stays aligned with `enum`.
 
+## Follow the actual JSON codec
+
+Request and response schemas follow the selected codec and direction. JSON field selection respects embedding, name conflicts, tag priority and omission rules. An existing `,string` option applies only where the actual encoder supports it; it is not a general request to stringify a type.
+
+| Go representation | Standard JSON projection |
+| --- | --- |
+| `time.Time` | A date-time string |
+| `time.Duration` | An integer number of nanoseconds |
+| `json.Number` | A JSON number, retaining decimal precision |
+| `json.RawMessage` | Any JSON value, including null |
+| `uint64` | A nonnegative integer with unsigned format |
+| Named or unnamed byte slice | A Base64 string for ordinary JSON byte encoding |
+
+Fixed arrays retain array structure. Custom element methods can change byte-slice output. Opaque Base64 cannot expose element-level scalar constraints: unsupported element annotations produce a diagnostic and require an explicit mapping for the complete slice. Gin text binding has its own codec; for example, duration text and repeated byte values differ from their JSON representations.
+
+Custom JSON/text methods are recognized by exact signatures and actual method sets, including pointer receivers and the active Go toolchain's streaming JSON and text-appender interfaces. Map keys use directional text-codec rules; an integer underlying type must not hide a custom key encoder or decoder. If pointer addressability changes the wire shape, map the containing type explicitly rather than guessing one representation.
+
+Register a public `TypeMapper` for a custom wire contract. A handled result must contain a non-nil schema; returned schemas and nested examples are detached from caller-owned data. Mapping failures retain their source identity. Match the real type, direction and codec, and test actual encoded bytes and accepted inputs.
+
+## Keep alias constraints and nullability
+
+A type alias retains its own description, title and constraints while conjoining the target contract through `allOf`. Alias metadata cannot weaken the target's constraints. For alias enum declarations, use an explicit value array when a bare enum directive cannot identify an independent constant set.
+
+`nonnull` excludes JSON null through references, unions and open schemas such as `json.RawMessage`, while preserving shared components and existing constraints. It does not require a property to be present. Field presence, nullability and decoder rejection are separate decisions; comments alone do not establish runtime enforcement.
+
 ## Preserve explicit values
 
 Optional standard booleans use `spec.Optional[bool]`. Absence, false and true remain distinct:
@@ -39,7 +64,7 @@ Read `.Value` for the value and `.Present` to distinguish absence. A zero-valued
 
 `Example.DataValue` represents logical data, while `SerializedValue` contains the actual wire representation. `externalValue` requires explicitly supplied offline example resources. XML metadata describes a contract; it does not select a serializer or prove how business code emits XML.
 
-Read the source reference for resource-aware `$defs`, embedded dependencies and bounded standalone output. [Native object details](https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8ab191b89a2065aa0/docs/native-objects.md) describe migration and current limits.
+Read the source reference for resource-aware `$defs`, embedded dependencies and bounded standalone output. [Native object details](https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/native-objects.md) describe migration and current limits.
 
 ## Polymorphic branches
 
@@ -55,9 +80,11 @@ The checker applies this rule to XML content on requests, responses, parameters 
 
 ## Native examples in the offline UI
 
-Request and response media examples now read `dataValue` and `serializedValue` directly. JSON data preserves false, zero, null, empty collections and JSON-looking strings. Explicit wire text is shown and submitted unchanged; paired examples also show **Data value**. Local browser checks cover exact JSON/XML/plain-text submissions, SSE text, reusable examples/media, selection, and manual edits. The source document keeps its native 3.2 fields.
+Request and response media examples read `dataValue` and `serializedValue` directly. JSON data preserves false, zero, null, empty collections and JSON-looking strings. Explicit JSON/XML/plain-text wire examples are shown and submitted unchanged; paired examples also show **Data value**. The source document keeps its native 3.2 fields.
 
-Use `serializedValue` for exact non-JSON body examples. This does not certify all parameter/header examples, form serializers, external example retrieval, or data-only XML serialization. Request execution still requires explicit configuration.
+Ordinary query and header examples retain logical values, including spaces and zero. URL-encoded forms preserve false and zero, allow field edits, and follow the selected example and media type. Form submission serializes the edited logical fields; paired wire text is a reference, not a byte-for-byte template. Response-header examples display logical and serialized values separately. The viewer does not fetch external examples.
+
+For exact XML body examples, supply `serializedValue`; attribute and CDATA submissions have actual byte checks. XML `nodeType` without explicit wire text, positional multipart encoding and non-form multipart produce a request guard instead of submitting an unverified representation. The guard covers both the Execute control and programmatic submission. Request execution still requires explicit configuration.
 
 ## Tag hierarchy and multipart structure
 

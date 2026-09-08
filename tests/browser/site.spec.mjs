@@ -199,7 +199,7 @@ test('human and agent documents remain complete with JavaScript disabled', async
   await expect(page.locator('article')).toContainText('openapi.generate.stale');
   await page.getByRole('link', { name: '人类', exact: true }).click();
   await expect(page).toHaveURL(/\/zh-cn\/human\/validation\/$/);
-  await expect(page.locator('article table')).toBeVisible();
+  await expect(page.locator('article table').first()).toBeVisible();
   await context.close();
 });
 

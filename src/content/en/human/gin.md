@@ -4,7 +4,7 @@ description: "Generate from real handlers and mount documentation once at startu
 lang: "en"
 audience: "human"
 chapter: "gin"
-source: "https://github.com/openapi-golang/gin-swagger/blob/5d3bef72339ffccbb0cbf366c513d5dd3f163502/docs/ai-integration.md"
+source: "https://github.com/openapi-golang/gin-swagger/blob/60545e2ee3b400bf9225ca7e42f89660370867a2/docs/ai-integration.md"
 ---
 
 ## Run the complete example
@@ -36,7 +36,30 @@ Authorize uses Bearer only. Enter the intentionally public demo value `demo-toke
 
 `Config.Groups` creates complete documents in the top-right definition selector. Every group's `Include(method, path)` intersects `Config.Include`. `Config.DefaultGroup` chooses the initial document. Tags group operations within a document; they are different from the definition selector.
 
-The example disables `UI.Filter`. Shared UI displays readable model titles, compact examples and enum meanings. Existing Gin binding, response, SSE and stream behavior is described in the [request guide](https://github.com/openapi-golang/gin-swagger/blob/5d3bef72339ffccbb0cbf366c513d5dd3f163502/docs/requests.md) and [response guide](https://github.com/openapi-golang/gin-swagger/blob/5d3bef72339ffccbb0cbf366c513d5dd3f163502/docs/responses.md).
+The example disables `UI.Filter`. Shared UI displays readable model titles, compact examples and enum meanings. Existing Gin binding, response, SSE and stream behavior is described in the [request guide](https://github.com/openapi-golang/gin-swagger/blob/60545e2ee3b400bf9225ca7e42f89660370867a2/docs/requests.md) and [response guide](https://github.com/openapi-golang/gin-swagger/blob/60545e2ee3b400bf9225ca7e42f89660370867a2/docs/responses.md).
+
+## Derive body presence from accepted paths
+
+JSON or multipart binding success and a successful `FormFile` read supply nonempty-body evidence. The final HTTP outcome determines whether this makes the complete request body required.
+
+| Handler behavior | Derived body presence |
+| --- | --- |
+| Reject a JSON binding error with 400 and return | Required when every accepted path needs the body |
+| Ignore the error, replace a pending error with 200, or return 204 on failure | No universal requirement established |
+| Mandatory binding commits an error before later rendering | Preserve its committed 400/413 |
+| URL-encoded binding or a required form property | Property constraints alone do not require a body |
+
+Automatic binding keeps evidence within each method/media condition. Incompatible presence requirements across media produce a condition diagnostic rather than weakening a branch. Custom input-stream replacement or decoder behavior requires a centralized rule or explicit client declaration. Inspect `nonEmptyBody` and the binding source in Explain. An optional body does not imply that every malformed input is accepted.
+
+## Distinguish parsing from wire types
+
+`Query` values remain strings even when passed to `strconv.Atoi` or `ParseInt`. Checked errors can produce an actual rejection branch; ignored errors can still return 200 with zero or a saturated integer. Do not invent a 400 response or numeric query schema from conversion alone. Likewise, `len(string)` measures UTF-8 bytes, while JSON Schema `minLength` counts Unicode code points.
+
+## Declare bounded file responses
+
+`File`, `FileAttachment` and `FileFromFS` require a centralized contract for media, ranges, preconditions and filesystem errors. A constant filename alone does not establish those facts. Use the public `Frontend.CallOutcomes` boundary with exact application and Gin identities, supported methods, asset scope and configuration evidence.
+
+The response guide includes a fixed text-asset profile tested through real GET/HEAD servers: full and partial content, multipart ranges, 304/412 preconditions, 416 ranges and missing-file 404. Its facts are declared, not inferred for arbitrary files. Potential 403/500 alternatives are declared but not exercised permission/I/O failures. Changing assets, directory redirects, symlinks and binary formats need their own contract and samples.
 
 ## Check freshness in CI
 

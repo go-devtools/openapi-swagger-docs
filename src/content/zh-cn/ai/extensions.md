@@ -4,7 +4,7 @@ description: "扩展已测试的公开边界，保持核心不包含框架规则
 lang: "zh-cn"
 audience: "ai"
 chapter: "extensions"
-source: "https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8ab191b89a2065aa0/docs/adapter-sdk.md"
+source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/adapter-sdk.md"
 ---
 
 ## 职责
@@ -19,6 +19,14 @@ source: "https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8
 - 回调确定、有界，并遵循同步要求。
 - 加载视图只读；遵守独立 Schema 的所有权。
 - 不执行业务函数来探测行为，不隐藏未知效果。
+
+## Helper 与结果规则
+
+- 保留精确泛型实例、函数身份、常量及响应／请求状态。不执行源码 helper 或 DTO 编解码器。
+- 可变地址、捕获和函数值需要有界源码重分析。回调对输入及 `Options.Configuration` 保持确定性。
+- `MaxSummaries=512`、`MaxSummaryBytes=16 MiB`、`DisableHelperSummaries=false`，选项参与源码指纹。字节预算表示保留的规范化数据，不是堆占用。
+- 复用仍消耗调用／深度预算。类型替换每帧 4096 个类型；摘要事实 4096 个值、深度 64。超限输出诊断。
+- `Effect.NonEmptyBody` 仅用于有证据的 `RequestBody`／`RequestField` 结果。请求体必填要求至少一条已知 2xx／3xx 成功路径且每条成功路径都有证明；字段必填独立。检查 `uses[].nonEmptyBody` 来源。
 
 ## 验收
 

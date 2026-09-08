@@ -4,7 +4,7 @@ description: "保留真实 Go 类型身份，描述应用实际收发的数据�
 lang: "zh-cn"
 audience: "human"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8ab191b89a2065aa0/docs/standalone-schema.md"
+source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/standalone-schema.md"
 ---
 
 ## 导出源码类型
@@ -24,6 +24,31 @@ GOWORK=off go run ./cmd/openapi schema --dir ./testdata/types --type Request --p
 
 稳定组件身份区分包、泛型参数、方向和媒体类型。Swagger UI 使用可读的 Schema 标题，隐藏身份区分后缀。枚举含义来自类型常量的注释，`x-enum-descriptions` 与 `enum` 保持对应。
 
+## 遵循实际 JSON 编解码器
+
+请求与响应 Schema 遵循选定的编解码器和方向。JSON 字段选择遵循嵌入、名称冲突、tag 优先级及省略规则。已有的 `,string` 仅在实际编码器支持的位置生效，不能据此将任意类型转换为字符串。
+
+| Go 表示 | 标准 JSON 投影 |
+| --- | --- |
+| `time.Time` | date-time 字符串 |
+| `time.Duration` | 表示纳秒数的整数 |
+| `json.Number` | 保留十进制精度的 JSON 数值 |
+| `json.RawMessage` | 任意 JSON 值，包括 null |
+| `uint64` | 带无符号格式的非负整数 |
+| 命名或未命名的字节切片 | 普通 JSON 字节编码下的 Base64 字符串 |
+
+定长数组保留数组结构。自定义元素方法可能改变字节切片的输出。Base64 字符串无法直接表达元素级标量约束：不支持的元素注解会产生诊断，需要显式映射整个切片。Gin 文本绑定使用独立 codec，例如时长文本和重复字节值均不同于 JSON 表示。
+
+自定义 JSON／文本方法按精确签名和实际方法集识别，包含指针接收者及当前 Go 工具链的流式 JSON、文本追加接口。Map 键使用区分方向的文本编解码规则，整数底层类型不能掩盖自定义键编码器或解码器。如果指针可寻址性改变线上结构，应显式映射包含该字段的类型，不能猜测唯一表示。
+
+使用公开 `TypeMapper` 注册自定义线上契约。声明已处理时必须返回非 nil Schema；返回的 Schema 和嵌套示例会与调用方数据分离。映射错误保留来源身份。规则应匹配真实类型、方向和 codec，并用实际输出字节与接受的输入验证。
+
+## 保留别名约束与空值语义
+
+类型别名保留自己的描述、标题和约束，通过 `allOf` 与目标契约合取。别名元数据不能削弱目标约束。别名的裸枚举指令无法确定独立常量集合时，应使用显式值数组声明枚举。
+
+`nonnull` 能排除引用、联合及 `json.RawMessage` 等开放 Schema 中的 JSON null，同时保留共享组件和既有约束。它不要求属性必须存在。字段存在性、空值和解码器拒绝条件应分别判断，注释本身不证明运行时执行约束。
+
 ## 保留显式值
 
 可选标准布尔字段使用 `spec.Optional[bool]`，区分缺省、false 和 true：
@@ -39,7 +64,7 @@ body := spec.RequestBody{Required: spec.Set(true)}
 
 `Example.DataValue` 表示逻辑数据，`SerializedValue` 表示线上序列化结果。`externalValue` 必须使用显式提供的离线示例资源。XML 元数据只描述契约，不会选择序列化器，也不能证明业务代码实际如何输出 XML。
 
-源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8ab191b89a2065aa0/docs/native-objects.md)说明了迁移方式和当前限制。
+源码参考介绍了具备资源身份的 `$defs`、嵌入依赖和有界导出。[原生对象指南](https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/native-objects.md)说明了迁移方式和当前限制。
 
 ## 多态分支
 
@@ -55,9 +80,11 @@ XML content 中的内联 element 或 attribute Schema，如果无法从组件或
 
 ## 离线 UI 中的原生示例
 
-请求和响应的媒体示例现在直接读取 `dataValue` 与 `serializedValue`。JSON 数据保留 false、零、null、空集合及外观类似 JSON 的字符串；显式序列化文本原样展示和提交，配对示例另外展示 **Data value**。本地浏览器验证覆盖 JSON、XML、纯文本的实际提交字节、SSE 文本、可复用示例与媒体、选择切换和手动编辑，源文档保留原生 3.2 字段。
+请求和响应的媒体示例直接读取 `dataValue` 与 `serializedValue`。JSON 数据保留 false、零、null、空集合及外观类似 JSON 的字符串。显式 JSON／XML／纯文本序列化示例原样展示和提交，配对示例另外展示 **Data value**。源文档保留原生 3.2 字段。
 
-需要精确的非 JSON 请求体示例时使用 `serializedValue`。这不代表参数与响应头示例、表单序列化、外部示例获取、只有逻辑值的 XML 序列化均已完整支持。执行请求仍需显式配置。
+普通 Query 和 Header 示例保留空格、零等逻辑值。URL 编码表单保留 false 和零，允许编辑字段，并跟随示例与媒体类型选择。表单提交会序列化编辑后的逻辑字段，配对的序列化文本仅供参考，不是逐字节提交模板。响应头示例分别展示逻辑值与序列化值。查看器不会抓取外部示例。
+
+精确 XML 请求体示例使用 `serializedValue`，属性与 CDATA 的提交已有实际字节验证。XML `nodeType` 缺少显式序列化文本、位置编码 multipart 和非表单 multipart 会触发请求保护，避免发送未经验证的表示。保护同时覆盖 Execute 控件和程序调用提交。执行请求仍需显式配置。
 
 ## 标签层级与 multipart 结构
 

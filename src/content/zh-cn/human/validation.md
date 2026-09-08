@@ -4,7 +4,7 @@ description: "区分文档有效性、源码新鲜度和实际样本提供的证
 lang: "zh-cn"
 audience: "human"
 chapter: "validation"
-source: "https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8ab191b89a2065aa0/docs/contracttest.md"
+source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/contracttest.md"
 ---
 
 ## 三种不同的检查
@@ -47,7 +47,24 @@ gin-swagger check --spec ./openapi.json --max-bytes=8388608 --timeout=30s
 
 两个 CLI 通过核心可选的 `checkio.ReadFile` 读取明确指定的本地文件。Gin 默认输入上限为 8 MiB，允许文件恰好达到边界。超限、非普通文件、取消和超时都会返回失败，不会继续报告成功。超时在读取与有界验证阶段之间协作检查，不能强制中断内核调用。`--max-bytes` 仅适用于 `check --spec`。
 
-共享 UI 将流式 `itemSchema` 与完整消息 Schema 分开展示，并保留有限 NDJSON/SSE 的分帧。整段查询参数保持只读，因为固定渲染器提交时会遗漏其值。QUERY 需要显式开启；未显示的扩展方法和标签元数据会产生兼容性提示。将页面视作可用客户端前，请查看[实际验证的 UI 边界](https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8ab191b89a2065aa0/docs/swaggerui-compatibility.md)。
+## 核对查看器的实际能力
+
+文档有效不代表每个功能都有可用客户端。共享 UI 保留原生 OpenAPI 3.2，并在不修改源文档的情况下报告限制。
+
+| 功能 | 已验证的查看器行为 |
+| --- | --- |
+| 普通 Query／Header 与 URL 编码示例 | 选择和编辑后保留零、false 等逻辑值，实际提交已有验证 |
+| Discriminator、XML 与外部文档元数据 | 展示元数据，不将判别提示当作实例验证或分支选择 |
+| 位置编码或非表单 multipart | 定位限制，同时阻止 Execute 和程序调用提交 |
+| XML `nodeType` 缺少显式序列化示例 | 阻止提交，不捏造线上文本 |
+| Callbacks 与 Links | 只读展示关系和表达式，不声明回调投递或链接遍历已实现 |
+| 根级及操作级 Server | 展示可选项及操作覆盖 |
+| 固定渲染器省略的 Webhooks | 输出定位警告，也覆盖仅含 Webhook 的文档 |
+| 整段查询参数 | 只读，固定渲染器会遗漏其提交值 |
+
+流式 `itemSchema` 面板独立于完整消息 Schema。真实分阶段 NDJSON／SSE 检查证明服务器响应未结束时客户端已收到首批字节，但固定 UI 仅在响应完成后显示输出。需要逐条观察长连接事件时，请使用流式客户端。有限消息的分帧检查不能证明 UI 支持增量渲染。
+
+QUERY 和所有请求执行都需要显式开启。省略的扩展方法与标签元数据会产生兼容性提示。兼容性报告为空仅表示未发现已列举的限制，不证明任意序列化器可用。具体范围见[实际验证的 UI 边界](https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/swaggerui-compatibility.md)。
 
 ## 查看器中的授权
 

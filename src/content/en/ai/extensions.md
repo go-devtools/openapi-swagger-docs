@@ -4,7 +4,7 @@ description: "Extend tested public boundaries without moving framework rules int
 lang: "en"
 audience: "ai"
 chapter: "extensions"
-source: "https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8ab191b89a2065aa0/docs/adapter-sdk.md"
+source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/adapter-sdk.md"
 ---
 
 ## Ownership
@@ -19,6 +19,14 @@ source: "https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8
 - Callbacks must be deterministic, bounded and synchronous where required.
 - Treat loaded views as immutable. Respect detached Schema ownership.
 - Never execute business functions for discovery or hide unknown effects.
+
+## Helper and outcome rules
+
+- Preserve exact generic instances, function identities, constants and response/request state. Never execute source helpers or DTO codecs.
+- Mutable addresses/captures/callables require bounded source reanalysis. Callback output must be deterministic for inputs and `Options.Configuration`.
+- `MaxSummaries=512`, `MaxSummaryBytes=16 MiB`, `DisableHelperSummaries=false`; settings enter the source fingerprint. Bytes describe normalized retained data, not heap usage.
+- Reuse still charges call/depth budgets. Type substitution: 4096 types/frame. Summary facts: 4096 values, depth 64. Exceeded budgets diagnose.
+- `Effect.NonEmptyBody` is valid only for proven `RequestBody`/`RequestField` outcomes. Body required needs at least one known accepted 2xx/3xx path and proof on every accepted path; field required is independent. Inspect `uses[].nonEmptyBody` provenance.
 
 ## Acceptance
 

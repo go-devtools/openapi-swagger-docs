@@ -4,7 +4,7 @@ description: "Preserve type identity, wire shape and explicit value presence."
 lang: "en"
 audience: "ai"
 chapter: "schemas"
-source: "https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8ab191b89a2065aa0/docs/native-objects.md"
+source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/native-objects.md"
 ---
 
 ## Projection
@@ -12,6 +12,15 @@ source: "https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8
 - `compiler.Load`: actual build conditions. `Project.Type`/`TypeIn`: real Go expressions.
 - `Project.Schema`: explicit direction, media type and codec. `Projection.StandaloneWithOptions`: bounded offline `$defs`.
 - Preserve imported/generic identity. Public views are immutable; callbacks are synchronous. Do not assume a custom codec uses JSON.
+
+## JSON decisions
+
+- Respect actual embedding, omission and `,string` applicability. Diagnose unsupported formats and addressability-dependent representations; map the containing type explicitly.
+- Custom JSON/text methods and map-key codecs are directional and use exact signatures. `TypeMapper` handled results must be non-nil; output and nested examples are detached.
+- `time.Time`: date-time; `time.Duration`: integer nanoseconds; `json.Number`: precise number; `json.RawMessage`: any JSON; `uint64`: nonnegative unsigned integer.
+- Ordinary byte slices, including named slices: Base64. Fixed arrays remain arrays. Custom element codecs may change output; opaque element constraints require a whole-slice mapping.
+- Alias metadata conjoins the target with `allOf`. Use explicit enum arrays when a bare alias enum cannot resolve constants.
+- `nonnull` excludes null through references/unions/open schemas without requiring property presence or modifying shared components.
 
 ## Presence
 

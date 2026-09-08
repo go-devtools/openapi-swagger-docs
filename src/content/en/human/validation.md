@@ -4,7 +4,7 @@ description: "Separate document validity, source freshness and evidence from rea
 lang: "en"
 audience: "human"
 chapter: "validation"
-source: "https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8ab191b89a2065aa0/docs/contracttest.md"
+source: "https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/contracttest.md"
 ---
 
 ## Three distinct checks
@@ -47,7 +47,24 @@ gin-swagger check --spec ./openapi.json --max-bytes=8388608 --timeout=30s
 
 Both CLIs use the optional core `checkio.ReadFile` helper for explicitly selected local files. The default Gin input limit is eight MiB; an exact byte boundary is valid. Oversized input, non-regular files, cancellation and expiration fail before reporting success. The timeout is cooperative between reads and bounded validation stages, not a hard interruption of kernel calls. `--max-bytes` applies only to `check --spec`.
 
-The shared UI displays stream `itemSchema` separately from a whole-body Schema and preserves finite NDJSON/SSE framing. Whole-query parameters stay read-only because the pinned renderer omits their values during submission. QUERY requires explicit enablement; omitted extension methods and tag metadata produce compatibility notes. Read the [verified UI boundaries](https://github.com/openapi-golang/openapi/blob/fcf841bbe00b5b4eba977dc8ab191b89a2065aa0/docs/swaggerui-compatibility.md) before treating a rendered operation as a working client.
+## Check the viewer's actual capability
+
+Document validity does not establish a working client for every feature. The shared UI retains native OpenAPI 3.2 and reports limitations without changing the source document.
+
+| Feature | Verified viewer behavior |
+| --- | --- |
+| Ordinary query/header and URL-encoded examples | Logical values survive selection and edits, including zero and false; actual submissions are checked |
+| Discriminator, XML and external documentation metadata | Displayed without claiming discriminator hints validate or select a branch |
+| Positional or non-form multipart | Located limitation; Execute and programmatic submissions are blocked |
+| XML `nodeType` without explicit serialized example | Blocked instead of inventing wire text |
+| Callbacks and links | Read-only relationships and expressions; no callback delivery or link traversal claim |
+| Root and operation servers | Visible choices with operation overrides |
+| Webhooks omitted by the pinned renderer | Located warning, including webhook-only documents |
+| Whole-query parameter | Read-only because the pinned renderer omits its submitted value |
+
+Stream `itemSchema` has a separate panel from whole-body Schema. Real gated NDJSON/SSE checks receive the first bytes while the server response is still open, but the pinned UI displays output only after completion. Use a streaming client to inspect long-lived events as they arrive. Finite framing checks do not establish incremental rendering.
+
+QUERY and all request execution require explicit enablement. Omitted extension methods and tag metadata produce compatibility notes. An empty compatibility report only means no listed limitation was found; it does not certify arbitrary serializers. Read the [verified UI boundaries](https://github.com/openapi-golang/openapi/blob/8e5783bf170eeb2db98771ebf1e8856c7a635928/docs/swaggerui-compatibility.md) for the tested scope.
 
 ## Authorization in the viewer
 
