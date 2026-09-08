@@ -4,7 +4,7 @@ description: "Generate from real handlers and mount documentation once at startu
 lang: "en"
 audience: "human"
 chapter: "gin"
-source: "https://github.com/openapi-golang/gin-swagger/blob/a2437c6092ed2f7c45016761c1e31aef3de17306/docs/ai-integration.md"
+source: "https://github.com/openapi-golang/gin-swagger/blob/4d50b1f71e3097a3129968350c7f41cf476f8fda/docs/ai-integration.md"
 ---
 
 ## Run the complete example
@@ -36,7 +36,7 @@ Authorize uses Bearer only. Enter the intentionally public demo value `demo-toke
 
 `Config.Groups` creates complete documents in the top-right definition selector. Every group's `Include(method, path)` intersects `Config.Include`. `Config.DefaultGroup` chooses the initial document. Tags group operations within a document; they are different from the definition selector.
 
-The example disables `UI.Filter`. Shared UI displays readable model titles, compact examples and enum meanings. Existing Gin binding, response, SSE and stream behavior is described in the [request guide](https://github.com/openapi-golang/gin-swagger/blob/a2437c6092ed2f7c45016761c1e31aef3de17306/docs/requests.md) and [response guide](https://github.com/openapi-golang/gin-swagger/blob/a2437c6092ed2f7c45016761c1e31aef3de17306/docs/responses.md).
+The example disables `UI.Filter`. Shared UI displays readable model titles, compact examples and enum meanings. Existing Gin binding, response, SSE and stream behavior is described in the [request guide](https://github.com/openapi-golang/gin-swagger/blob/4d50b1f71e3097a3129968350c7f41cf476f8fda/docs/requests.md) and [response guide](https://github.com/openapi-golang/gin-swagger/blob/4d50b1f71e3097a3129968350c7f41cf476f8fda/docs/responses.md).
 
 ## Derive body presence from accepted paths
 
